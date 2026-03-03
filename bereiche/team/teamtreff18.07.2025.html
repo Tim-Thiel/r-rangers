@@ -1,10 +1,9 @@
-
 <!--
 1. <title> und <h1> ändern!
 2. in [BEREICH].html einfügen:
-    <div class="card" onclick="location.href='aktionen/ravensburg2025'">
-        <img src="https://res.cloudinary.com/db4arm1o7/image/upload/v1769723802/[BILDNAME].jpg" alt="Ravensburg 2025">
-        <h3>Ravensburg 2025</h3>
+    <div class="card" onclick="location.href='team/teamtreff18.07.2025'">
+        <img src="https://res.cloudinary.com/db4arm1o7/image/upload/v1769723802/[BILDNAME].jpg" alt="Teamtreff 18.07.2025">
+        <h3>Teamtreff 18.07.2025</h3>
     </div>
 3. In Cloudinary Bildordner erstellen und Bilder hochladen!
 4. In Cloudinary den Bildern einen Tag zuweisen [TITEL DER AKTION]
@@ -15,14 +14,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R-Rangers – Ravensburg 2025</title>
+
+<title>R-Rangers – Teamtreff 18.07.2025</title>
 
 <link rel="stylesheet" href="../../css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script src="../../js/auth.js"></script>
 <script>
-if (!checkAccess("privat")) {
+if (!checkAccess("team")) {
     alert("Zugang nur mit Passwort möglich.");
     window.location.href = "/index";
 }
@@ -32,9 +32,10 @@ if (!checkAccess("privat")) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
-<body data-action="ravensburg2025">
 
-<h1>Ravensburg 2025</h1>
+<body data-action="teamtreff18.07.2025">
+
+<h1>Teamtreff 18.07.2025</h1>
 
 <div style="text-align: center; margin-bottom: 20px;">
     <button id="toggleAllBtn" onclick="toggleAllCheckboxes()">Alle auswählen</button> 
