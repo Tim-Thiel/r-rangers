@@ -40,15 +40,25 @@ if (file_exists($cacheFile) && filemtime($cacheFile) >= filemtime($srcFile)) {
 
 // Bild laden
 $ext = strtolower(pathinfo($datei, PATHINFO_EXTENSION));
+// GD verfügbar?
+if (!function_exists('imagecreatefromjpeg')) {
+    header('Content-Type: image/jpeg');
+    header('Cache-Control: public, max-age=2592000');
+    readfile($srcFile);
+    exit;
+}
+
 $src = match($ext) {
-    'jpg', 'jpeg' => imagecreatefromjpeg($srcFile),
-    'png'         => imagecreatefrompng($srcFile),
-    'webp'        => imagecreatefromwebp($srcFile),
+    'jpg', 'jpeg' => @imagecreatefromjpeg($srcFile),
+    'png'         => @imagecreatefrompng($srcFile),
+    'webp'        => @imagecreatefromwebp($srcFile),
     default       => null,
 };
 
 if (!$src) {
-    http_response_code(500);
+    header('Content-Type: image/jpeg');
+    header('Cache-Control: public, max-age=2592000');
+    readfile($srcFile);
     exit;
 }
 
@@ -77,11 +87,18 @@ imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $newH, $origW, $origH);
 
 // Qualität: 85 für Lightbox (1600px), 80 für Thumbnails (400px)
 $quality = ($width === 1600) ? 85 : 80;
-imagejpeg($dst, $cacheFile, $quality);
-
 imagedestroy($src);
-imagedestroy($dst);
+
+// In Cache speichern (ignorieren falls keine Schreibrechte)
+@imagejpeg($dst, $cacheFile, $quality);
 
 header('Content-Type: image/jpeg');
 header('Cache-Control: public, max-age=2592000');
-readfile($cacheFile);
+if (file_exists($cacheFile)) {
+    imagedestroy($dst);
+    readfile($cacheFile);
+} else {
+    // Direkt ausgeben ohne Cache
+    imagejpeg($dst, null, $quality);
+    imagedestroy($dst);
+}
