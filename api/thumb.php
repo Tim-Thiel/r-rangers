@@ -10,7 +10,7 @@ $width   = (int)($_GET['w'] ?? 400);
 if (!preg_match('/^[a-zA-Z0-9_-]+$/', $bereich) ||
     !preg_match('/^[a-zA-Z0-9_.()-]+$/', $id)    ||
     !preg_match('/^[a-zA-Z0-9_.-]+$/', $datei)   ||
-    !in_array($width, [400, 1600])) {
+    !in_array($width, [400, 800, 1600])) {
     http_response_code(400);
     exit;
 }
@@ -89,7 +89,7 @@ if ($ext === 'png') {
 imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $newH, $origW, $origH);
 
 // Qualität: 85 für Lightbox (1600px), 80 für Thumbnails (400px)
-$quality = ($width === 1600) ? 85 : 80;
+$quality = ($width >= 800) ? 85 : 80;
 imagedestroy($src);
 
 // In Cache speichern (ignorieren falls keine Schreibrechte)

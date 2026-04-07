@@ -359,7 +359,8 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 10010; }
 .modal-overlay.hidden { opacity: 0; pointer-events: none; }
 .modal-content { background: white; padding: 35px 30px 30px 30px; border-radius: var(--radius); max-width: 450px; width: 90%; text-align: center; position: relative; }
-.modal-close { position: absolute; top: 10px; right: 15px; font-size: 32px; color: #999; cursor: pointer; }
+.modal-close { position: absolute; top: 10px; right: 15px; font-size: 32px; color: #999; cursor: pointer; transition: color 0.2s; }
+.modal-close:hover { color: var(--ranger-blue); }
 .progress-container { width: 100%; background: #eee; border-radius: 10px; margin: 20px 0; overflow: hidden; display: none; }
 .progress-bar { width: 0%; height: 15px; background: var(--ranger-blue); transition: width 0.3s; }
 

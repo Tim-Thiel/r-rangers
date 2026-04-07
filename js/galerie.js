@@ -147,6 +147,9 @@ async function loadGallery() {
             else img.addEventListener('load', setSpan);
         });
 
+        // Lightbox-Bilder im Hintergrund vorladen
+        galleryImages.forEach(src => { new Image().src = src; });
+
         // Spans bei Fenstergröße-Änderung neu berechnen
         let resizeTimer;
         window.addEventListener('resize', () => {
@@ -176,24 +179,13 @@ function updateLightboxImage() {
     const lbContainer = document.getElementById("lightbox");
     if (!lbImg || !lbContainer) return;
 
-    const fullSrc  = galleryImages[currentIndex];
-    const thumbSrc = thumbImages[currentIndex];
-
-    // Sofort das 400px-Thumbnail anzeigen
-    lbImg.src = thumbSrc;
-    lbImg.style.opacity = "0.7";
-    lbImg.style.filter  = "blur(2px)";
+    lbImg.src = "";
+    lbImg.style.opacity = "0";
     lbContainer.classList.add("loading");
-
-    // 1600px-Bild im Hintergrund nachladen
-    const full = new Image();
-    full.src = fullSrc;
-    full.onload = () => {
-        if (galleryImages[currentIndex] !== fullSrc) return; // Bild gewechselt
-        lbImg.src = fullSrc;
-        lbImg.style.opacity = "1";
-        lbImg.style.filter  = "";
+    lbImg.src = galleryImages[currentIndex];
+    lbImg.onload = () => {
         lbContainer.classList.remove("loading");
+        lbImg.style.opacity = "1";
     };
 }
 
