@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R-Rangers – Galerie</title>
+
+<link rel="stylesheet" href="../css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+    const _params = new URLSearchParams(window.location.search);
+    const _bereich = _params.get('bereich') || '';
+    if (!checkAccess(_bereich)) {
+        alert("Zugang nur mit Passwort möglich.");
+        window.location.href = "/index";
+    }
+</script>
+<script src="/js/nav.js" defer></script>
+<script src="/js/galerie.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<h1 id="galerie-titel">Galerie</h1>
+
+<div style="text-align: center; margin-bottom: 20px;">
+    <button id="toggleAllBtn" onclick="toggleAllCheckboxes()">Alle auswählen</button>
+    <button onclick="downloadSelected()">Ausgewählte Bilder herunterladen</button>
+</div>
+
+<div id="gallery" class="gallery"></div>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox hidden">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-nav">
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+    </div>
+    <button id="lightbox-download-btn" class="download-btn">Bild herunterladen</button>
+</div>
+
+<button id="scrollTopBtn" title="Nach oben scrollen">↑</button>
+
+<div id="downloadModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeDownloadModal()">&times;</span>
+        <h3 id="modalTitle">Hinweis</h3>
+        <div id="modalBody"></div>
+        <div style="margin-top: 20px;">
+            <button id="startDownloadBtn" class="download-btn">Download starten</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
