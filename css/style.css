@@ -108,8 +108,13 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
 }
 
 .grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+}
+
+.grid .card {
+    flex: 0 0 280px;
 }
 
 /* --------------------------------------------
