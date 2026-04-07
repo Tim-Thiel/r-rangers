@@ -28,7 +28,10 @@ window.toggleAllCheckboxes = function () {
     const boxes = document.querySelectorAll(".img-checkbox");
     if (boxes.length === 0) return;
     const allChecked = Array.from(boxes).every(cb => cb.checked);
-    boxes.forEach(cb => cb.checked = !allChecked);
+    boxes.forEach(cb => {
+        cb.checked = !allChecked;
+        cb.closest(".gallery-item")?.classList.toggle("selected", !allChecked);
+    });
     document.getElementById('toggleAllBtn').textContent = allChecked ? "Alle auswählen" : "Alle abwählen";
 };
 
@@ -101,14 +104,19 @@ async function loadGallery() {
 
             card.innerHTML = `
                 <img src="${entry.thumb}" alt="${cleanName}" loading="lazy">
-                <div class="checkbox-container">
-                    <label><input type="checkbox" class="img-checkbox" value="${entry.original}"> Auswählen</label>
+                <div class="gallery-overlay">
+                    <label onclick="event.stopPropagation()">
+                        <input type="checkbox" class="img-checkbox" value="${entry.original}"> Auswählen
+                    </label>
+                    <a href="#" class="gallery-dl-btn">⬇ Download</a>
                 </div>
-                <a href="#" class="download-btn">Download</a>
             `;
 
-            card.querySelector(".checkbox-container").onclick = e => e.stopPropagation();
-            card.querySelector(".download-btn").onclick = e => {
+            card.querySelector(".img-checkbox").addEventListener("change", e => {
+                card.classList.toggle("selected", e.target.checked);
+            });
+
+            card.querySelector(".gallery-dl-btn").onclick = e => {
                 e.preventDefault();
                 e.stopPropagation();
                 showModalContent("Wichtiger Download-Hinweis!", downloadHinweisHTML, true,
