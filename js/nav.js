@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <input id="pw-popup-input" type="password" placeholder="Passwort"
                     style="width:90%; padding:10px; border-radius:8px; margin: 15px 0;">
                 <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-                    <button id="pw-popup-confirm" class="download-btn">Öffnen</button>
                     <button id="pw-popup-cancel"  class="download-btn" style="background: #666;">Abbrechen</button>
+                    <button id="pw-popup-confirm" class="download-btn">Öffnen</button>
                 </div>
             </div>
         </div>

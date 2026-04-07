@@ -168,54 +168,40 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     overflow: hidden;
     cursor: pointer;
     box-shadow: var(--shadow);
-    background: var(--card-bg);
+    background: transparent;
 }
 
 .gallery-item img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: var(--radius);
-    transition: filter 0.25s ease;
 }
 
 .gallery-item:hover {
     box-shadow: 0 0 0 3px var(--ranger-blue), var(--shadow-hover);
 }
 
-/* Download-Bereich unten mit Gradient */
-.gallery-bottom {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 30px 0 10px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.6));
-    display: flex;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.25s;
-    border-radius: 0 0 var(--radius) var(--radius);
-    pointer-events: none;
-}
-
-.gallery-item:hover .gallery-bottom {
-    opacity: 1;
-}
-
-/* Download-Button (Kreis) unten mittig */
+/* Download-Button (Kreis) unten rechts */
 .gallery-dl-btn {
-    width: 32px; height: 32px;
+    position: absolute;
+    bottom: 10px; right: 10px;
+    width: 30px; height: 30px;
     border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.85);
-    background: rgba(0,0,0,0.25);
+    background: rgba(0,0,0,0.3);
     color: white;
-    font-size: 14px;
+    font-size: 13px;
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s, border-color 0.2s;
-    pointer-events: all;
-    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s, border-color 0.2s;
+    z-index: 5;
+}
+
+.gallery-item:hover .gallery-dl-btn {
+    opacity: 1;
 }
 
 .gallery-dl-btn:hover {
@@ -252,6 +238,14 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     opacity: 1;
     background: var(--ranger-blue);
     border-color: var(--ranger-blue);
+}
+
+.gallery-item:hover .gallery-select-btn::after {
+    content: "✓";
+    color: rgba(255,255,255,0.5);
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
 }
 
 .gallery-item.selected .gallery-select-btn::after {

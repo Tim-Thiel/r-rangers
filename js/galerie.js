@@ -12,10 +12,20 @@ const downloadHinweisHTML = `
     <p>Bestätige die Einhaltung dieser Regelung mit<br>'Download starten'.</p>
 `;
 
-const params  = new URLSearchParams(window.location.search);
-const bereich = params.get('bereich') || '';
-const id      = params.get('id')      || '';
-const titel   = params.get('titel')   || 'Galerie';
+const params = new URLSearchParams(window.location.search);
+let bereich  = params.get('bereich') || '';
+let id       = params.get('id')      || '';
+const titel  = params.get('titel')   || 'Galerie';
+
+// Fallback: bereich/id aus sauberer URL lesen (z.B. nach Seiten-Reload)
+if (!bereich || !id) {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    // Erwartet: ['bereiche', 'aktionen', 'slk_tag2026']
+    if (parts.length >= 3 && parts[0] === 'bereiche') {
+        bereich = bereich || parts[1];
+        id      = id      || parts[2];
+    }
+}
 
 // Saubere URL anzeigen (statt ?bereich=...&id=...&titel=...)
 if (bereich && id) {
@@ -107,9 +117,7 @@ async function loadGallery() {
                 <label class="gallery-select-btn" title="Auswählen" onclick="event.stopPropagation()">
                     <input type="checkbox" class="img-checkbox" value="${entry.original}">
                 </label>
-                <div class="gallery-bottom">
-                    <a href="#" class="gallery-dl-btn" title="Herunterladen">⬇</a>
-                </div>
+                <a href="#" class="gallery-dl-btn" title="Herunterladen">⬇</a>
             `;
 
             card.querySelector(".img-checkbox").addEventListener("change", e => {
