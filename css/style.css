@@ -120,6 +120,7 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     grid-auto-rows: 10px;
     gap: 10px;
     padding: 0 20px;
+    align-items: start;
 }
 
 /* --------------------------------------------
@@ -232,6 +233,19 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
 
 .gallery-item:hover .gallery-select-btn {
     opacity: 1;
+}
+
+.gallery-select-btn:hover {
+    background: rgba(255,255,255,0.35);
+    border-color: white;
+}
+
+.gallery-select-btn:hover::after {
+    content: "✓";
+    color: rgba(255,255,255,0.9) !important;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
 }
 
 .gallery-item.selected .gallery-select-btn {
