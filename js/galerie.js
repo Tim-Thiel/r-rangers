@@ -104,10 +104,10 @@ async function loadGallery() {
 
             card.innerHTML = `
                 <img src="${entry.thumb}" alt="${cleanName}" loading="lazy">
+                <label class="gallery-select-btn" title="Auswählen" onclick="event.stopPropagation()">
+                    <input type="checkbox" class="img-checkbox" value="${entry.original}">
+                </label>
                 <div class="gallery-overlay">
-                    <label onclick="event.stopPropagation()">
-                        <input type="checkbox" class="img-checkbox" value="${entry.original}"> Auswählen
-                    </label>
                     <a href="#" class="gallery-dl-btn">⬇ Download</a>
                 </div>
             `;
