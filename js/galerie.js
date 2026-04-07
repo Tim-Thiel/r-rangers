@@ -64,13 +64,27 @@ window.closeDownloadModal = function () {
 
 window.openLightbox = function (idx) {
     currentIndex = idx;
-    const lb = document.getElementById("lightbox");
+    const lb    = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lightbox-img");
     if (lb) {
         lb.classList.remove("hidden");
         window.history.pushState({ popup: "lightbox" }, "");
     }
+    if (lbImg) {
+        lbImg.style.opacity   = "0";
+        lbImg.style.transform = "scale(0.93)";
+    }
     updateLightboxImage();
 };
+
+function closeLightbox() {
+    const lb    = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lightbox-img");
+    if (!lb || lb.classList.contains("hidden")) return;
+    lbImg.style.opacity   = "0";
+    lbImg.style.transform = "scale(0.93)";
+    setTimeout(() => lb.classList.add("hidden"), 280);
+}
 
 // === GALERIE LADEN ===
 
@@ -179,14 +193,23 @@ function updateLightboxImage() {
     const lbContainer = document.getElementById("lightbox");
     if (!lbImg || !lbContainer) return;
 
-    lbImg.src = "";
-    lbImg.style.opacity = "0";
+    const target = galleryImages[currentIndex];
+
+    // Raus-Zoomen
+    lbImg.style.opacity   = "0";
+    lbImg.style.transform = "scale(0.93)";
     lbContainer.classList.add("loading");
-    lbImg.src = galleryImages[currentIndex];
-    lbImg.onload = () => {
-        lbContainer.classList.remove("loading");
-        lbImg.style.opacity = "1";
-    };
+
+    // Nach der Zoom-out-Animation das neue Bild laden
+    setTimeout(() => {
+        lbImg.src = target;
+        lbImg.onload = () => {
+            if (galleryImages[currentIndex] !== target) return;
+            lbContainer.classList.remove("loading");
+            lbImg.style.opacity   = "1";
+            lbImg.style.transform = "scale(1)";
+        };
+    }, 220);
 }
 
 // === DOWNLOAD ===
@@ -298,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector(".lightbox-close")?.addEventListener("click", () => {
-        document.getElementById("lightbox").classList.add("hidden");
+        closeLightbox();
         if (window.history.state?.popup) window.history.back();
     });
 
@@ -309,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (modal && !modal.classList.contains("hidden")) {
                 window.closeDownloadModal();
             } else if (lb && !lb.classList.contains("hidden")) {
-                lb.classList.add("hidden");
+                closeLightbox();
                 if (window.history.state?.popup === "lightbox") window.history.back();
             }
         }
