@@ -1,10 +1,9 @@
 RewriteEngine On
 
-# Trailing Slash: /bereiche/aktionen/ -> /bereiche/aktionen.html (wenn gleichnamige .html existiert)
-RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-RewriteRule ^(.+)/$ /$1.html [R=301,L]
+# Verhindert Apaches automatischen Redirect von /bereiche/aktionen -> /bereiche/aktionen/
+DirectorySlash Off
 
-# Kein Extension: /bereiche/aktionen -> bereiche/aktionen.html
+# Interner Rewrite (ohne Redirect): /bereiche/aktionen -> bereiche/aktionen.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.+)$ $1.html [L,QSA]
