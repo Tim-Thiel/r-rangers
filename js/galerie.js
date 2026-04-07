@@ -107,7 +107,9 @@ async function loadGallery() {
                 <label class="gallery-select-btn" title="Auswählen" onclick="event.stopPropagation()">
                     <input type="checkbox" class="img-checkbox" value="${entry.original}">
                 </label>
-                <a href="#" class="gallery-dl-btn" title="Herunterladen">⬇</a>
+                <div class="gallery-bottom">
+                    <a href="#" class="gallery-dl-btn" title="Herunterladen">⬇</a>
+                </div>
             `;
 
             card.querySelector(".img-checkbox").addEventListener("change", e => {
@@ -122,6 +124,33 @@ async function loadGallery() {
             };
 
             gallery.appendChild(card);
+
+            // Masonry: Grid-Span anhand des Seitenverhältnisses setzen
+            const img = card.querySelector('img');
+            const setSpan = () => {
+                if (!img.naturalWidth) return;
+                const ratio  = img.naturalHeight / img.naturalWidth;
+                const spans  = Math.ceil((card.offsetWidth * ratio + 10) / 20);
+                card.style.gridRowEnd = `span ${spans}`;
+            };
+            if (img.complete && img.naturalHeight) setSpan();
+            else img.addEventListener('load', setSpan);
+        });
+
+        // Spans bei Fenstergröße-Änderung neu berechnen
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    const img = item.querySelector('img');
+                    if (img.complete && img.naturalWidth) {
+                        const ratio = img.naturalHeight / img.naturalWidth;
+                        const spans = Math.ceil((item.offsetWidth * ratio + 10) / 20);
+                        item.style.gridRowEnd = `span ${spans}`;
+                    }
+                });
+            }, 100);
         });
 
     } catch (err) {
