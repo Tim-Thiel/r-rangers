@@ -1,4 +1,10 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 86400,
+    'httponly' => true,
+    'samesite' => 'Lax',
+]);
+session_start();
 header('Content-Type: application/json');
 
 $bereich = $_GET['bereich'] ?? '';
@@ -9,6 +15,13 @@ if (!preg_match('/^[a-zA-Z0-9_-]+$/', $bereich) ||
     !preg_match('/^[a-zA-Z0-9_.()-]+$/', $id)) {
     http_response_code(400);
     echo json_encode(['error' => 'Ungültige Parameter']);
+    exit;
+}
+
+// Server-seitige Auth-Prüfung
+if (($_SESSION['auth_' . $bereich] ?? '') !== date('Y-m-d')) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Nicht authentifiziert']);
     exit;
 }
 

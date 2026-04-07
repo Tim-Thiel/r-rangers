@@ -72,6 +72,13 @@ async function loadGallery() {
 
     try {
         const response = await fetch(`/api/bilder.php?bereich=${encodeURIComponent(bereich)}&id=${encodeURIComponent(id)}`);
+
+        if (response.status === 401) {
+            localStorage.removeItem("auth_date_" + bereich);
+            askPassword(bereich, loadGallery);
+            return;
+        }
+
         const data = await response.json();
 
         if (!data.images || data.images.length === 0) {
