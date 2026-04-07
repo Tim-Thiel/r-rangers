@@ -1,6 +1,7 @@
 /* galerie.js – Galerie mit lokalen Bildern von Netcup */
 
 let galleryImages  = [];
+let thumbImages    = [];
 let originalImages = [];
 let currentIndex   = 0;
 let modalOverlay;
@@ -105,6 +106,7 @@ async function loadGallery() {
 
         data.images.forEach((entry, idx) => {
             galleryImages.push(entry.lightbox);
+            thumbImages.push(entry.thumb);
             originalImages.push(entry.original);
 
             const cleanName = entry.original.split('/').pop();
@@ -170,17 +172,28 @@ async function loadGallery() {
 // === LIGHTBOX ===
 
 function updateLightboxImage() {
-    const lbImg      = document.getElementById("lightbox-img");
+    const lbImg       = document.getElementById("lightbox-img");
     const lbContainer = document.getElementById("lightbox");
     if (!lbImg || !lbContainer) return;
 
-    lbImg.src = "";
-    lbImg.style.opacity = "0";
+    const fullSrc  = galleryImages[currentIndex];
+    const thumbSrc = thumbImages[currentIndex];
+
+    // Sofort das 400px-Thumbnail anzeigen
+    lbImg.src = thumbSrc;
+    lbImg.style.opacity = "0.7";
+    lbImg.style.filter  = "blur(2px)";
     lbContainer.classList.add("loading");
-    lbImg.src = galleryImages[currentIndex];
-    lbImg.onload = () => {
-        lbContainer.classList.remove("loading");
+
+    // 1600px-Bild im Hintergrund nachladen
+    const full = new Image();
+    full.src = fullSrc;
+    full.onload = () => {
+        if (galleryImages[currentIndex] !== fullSrc) return; // Bild gewechselt
+        lbImg.src = fullSrc;
         lbImg.style.opacity = "1";
+        lbImg.style.filter  = "";
+        lbContainer.classList.remove("loading");
     };
 }
 

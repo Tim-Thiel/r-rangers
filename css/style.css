@@ -116,7 +116,7 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
 /* Masonry-Galerie (Zeilen-Reihenfolge via JS-Spans) */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     grid-auto-rows: 10px;
     gap: 10px;
     padding: 0 20px;
@@ -210,10 +210,10 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     border-color: var(--ranger-blue);
 }
 
-/* Auswahl-Button (Häkchen-Kreis) oben links */
+/* Auswahl-Button (Häkchen-Kreis) unten links */
 .gallery-select-btn {
     position: absolute;
-    top: 10px; left: 10px;
+    bottom: 10px; left: 10px;
     width: 30px; height: 30px;
     border-radius: 50%;
     border: 2.5px solid white;
@@ -320,7 +320,8 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
     100% { transform: rotate(360deg); }
 }
 
-.lightbox-close { position: absolute; top: 25px; right: 40px; font-size: 45px; color: #fff; cursor: pointer; }
+.lightbox-close { position: absolute; top: 25px; right: 40px; font-size: 45px; color: #fff; cursor: pointer; transition: color 0.2s; }
+.lightbox-close:hover { color: var(--ranger-blue); }
 
 /* Pfeile mit blauem Hover-Effekt */
 .lightbox-nav span { 
