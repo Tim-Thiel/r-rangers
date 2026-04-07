@@ -107,9 +107,7 @@ async function loadGallery() {
                 <label class="gallery-select-btn" title="Auswählen" onclick="event.stopPropagation()">
                     <input type="checkbox" class="img-checkbox" value="${entry.original}">
                 </label>
-                <div class="gallery-overlay">
-                    <a href="#" class="gallery-dl-btn">⬇ Download</a>
-                </div>
+                <a href="#" class="gallery-dl-btn" title="Herunterladen">⬇</a>
             `;
 
             card.querySelector(".img-checkbox").addEventListener("change", e => {
