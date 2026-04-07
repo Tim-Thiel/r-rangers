@@ -48,12 +48,15 @@ if (!function_exists('imagecreatefromjpeg')) {
     exit;
 }
 
-$src = match($ext) {
-    'jpg', 'jpeg' => @imagecreatefromjpeg($srcFile),
-    'png'         => @imagecreatefrompng($srcFile),
-    'webp'        => @imagecreatefromwebp($srcFile),
-    default       => null,
-};
+if ($ext === 'jpg' || $ext === 'jpeg') {
+    $src = @imagecreatefromjpeg($srcFile);
+} elseif ($ext === 'png') {
+    $src = @imagecreatefrompng($srcFile);
+} elseif ($ext === 'webp') {
+    $src = @imagecreatefromwebp($srcFile);
+} else {
+    $src = null;
+}
 
 if (!$src) {
     header('Content-Type: image/jpeg');
