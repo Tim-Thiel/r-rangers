@@ -4,22 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>R-Rangers – Galerie</title>
-
 <link rel="stylesheet" href="../css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script src="/js/auth.js"></script>
-<script>
-    const _params = new URLSearchParams(window.location.search);
-    const _bereich = _params.get('bereich') || '';
-    if (!checkAccess(_bereich)) {
-        alert("Zugang nur mit Passwort möglich.");
-        window.location.href = "/index";
-    }
-</script>
 <script src="/js/nav.js" defer></script>
-<script src="/js/galerie.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="/js/galerie.js" defer></script>
 </head>
 
 <body>
@@ -33,7 +23,6 @@
 
 <div id="gallery" class="gallery"></div>
 
-<!-- Lightbox -->
 <div id="lightbox" class="lightbox hidden">
     <span class="lightbox-close">&times;</span>
     <img id="lightbox-img" src="" alt="">

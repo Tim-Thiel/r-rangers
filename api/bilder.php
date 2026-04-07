@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 $bereich = $_GET['bereich'] ?? '';
 $id      = $_GET['id']      ?? '';
 
-// Nur erlaubte Zeichen (Sicherheit gegen Pfad-Traversal)
+// Sicherheit: nur erlaubte Zeichen (verhindert Pfad-Traversal)
 if (!preg_match('/^[a-zA-Z0-9_-]+$/', $bereich) ||
     !preg_match('/^[a-zA-Z0-9_.()-]+$/', $id)) {
     http_response_code(400);
@@ -22,10 +22,14 @@ if (!is_dir($dir)) {
 $images = [];
 foreach (glob($dir . "*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", GLOB_BRACE) as $file) {
     $name = basename($file);
-    // cover.jpg nicht in der Galerie anzeigen
-    if (strtolower($name) === 'cover.jpg') continue;
-    $images[] = "/bilder/$bereich/$id/$name";
+    $images[] = [
+        'original' => "/bilder/$bereich/$id/$name",
+        'lightbox' => "/api/thumb.php?bereich=$bereich&id=$id&datei=$name&w=1600",
+        'thumb'    => "/api/thumb.php?bereich=$bereich&id=$id&datei=$name&w=400",
+    ];
 }
 
-natcasesort($images);
-echo json_encode(['images' => array_values($images)]);
+// Sortieren nach Dateiname (natürliche Sortierung)
+usort($images, fn($a, $b) => strnatcasecmp(basename($a['original']), basename($b['original'])));
+
+echo json_encode(['images' => $images]);

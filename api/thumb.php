@@ -1,0 +1,87 @@
+<?php
+// Generiert verkleinerte Bilder on-the-fly und speichert sie im Cache
+
+$bereich = $_GET['bereich'] ?? '';
+$id      = $_GET['id']      ?? '';
+$datei   = $_GET['datei']   ?? '';
+$width   = (int)($_GET['w'] ?? 400);
+
+// Sicherheit: nur erlaubte Zeichen
+if (!preg_match('/^[a-zA-Z0-9_-]+$/', $bereich) ||
+    !preg_match('/^[a-zA-Z0-9_.()-]+$/', $id)    ||
+    !preg_match('/^[a-zA-Z0-9_.-]+$/', $datei)   ||
+    !in_array($width, [400, 1600])) {
+    http_response_code(400);
+    exit;
+}
+
+$srcFile   = __DIR__ . "/../bilder/$bereich/$id/$datei";
+$cacheDir  = __DIR__ . "/../bilder_cache/$bereich/$id/";
+$cacheFile = $cacheDir . "w{$width}_" . $datei;
+
+// Quelldatei muss existieren
+if (!file_exists($srcFile)) {
+    http_response_code(404);
+    exit;
+}
+
+// Cache-Verzeichnis anlegen falls nötig
+if (!is_dir($cacheDir)) {
+    mkdir($cacheDir, 0755, true);
+}
+
+// Cache nutzen wenn vorhanden und aktuell
+if (file_exists($cacheFile) && filemtime($cacheFile) >= filemtime($srcFile)) {
+    header('Content-Type: image/jpeg');
+    header('Cache-Control: public, max-age=2592000'); // 30 Tage
+    readfile($cacheFile);
+    exit;
+}
+
+// Bild laden
+$ext = strtolower(pathinfo($datei, PATHINFO_EXTENSION));
+$src = match($ext) {
+    'jpg', 'jpeg' => imagecreatefromjpeg($srcFile),
+    'png'         => imagecreatefrompng($srcFile),
+    'webp'        => imagecreatefromwebp($srcFile),
+    default       => null,
+};
+
+if (!$src) {
+    http_response_code(500);
+    exit;
+}
+
+$origW = imagesx($src);
+$origH = imagesy($src);
+
+// Nur verkleinern, nie vergrößern
+if ($origW <= $width) {
+    imagedestroy($src);
+    header('Content-Type: image/jpeg');
+    header('Cache-Control: public, max-age=2592000');
+    readfile($srcFile);
+    exit;
+}
+
+$newH = (int)round($origH * $width / $origW);
+$dst  = imagecreatetruecolor($width, $newH);
+
+// PNG-Transparenz erhalten
+if ($ext === 'png') {
+    imagealphablending($dst, false);
+    imagesavealpha($dst, true);
+}
+
+imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $newH, $origW, $origH);
+
+// Qualität: 85 für Lightbox (1600px), 80 für Thumbnails (400px)
+$quality = ($width === 1600) ? 85 : 80;
+imagejpeg($dst, $cacheFile, $quality);
+
+imagedestroy($src);
+imagedestroy($dst);
+
+header('Content-Type: image/jpeg');
+header('Cache-Control: public, max-age=2592000');
+readfile($cacheFile);

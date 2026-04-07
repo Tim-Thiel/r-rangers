@@ -3,7 +3,6 @@
 let galleryImages  = [];
 let originalImages = [];
 let currentIndex   = 0;
-
 let modalOverlay;
 let startDownloadBtn;
 
@@ -13,7 +12,6 @@ const downloadHinweisHTML = `
     <p>Bestätige die Einhaltung dieser Regelung mit<br>'Download starten'.</p>
 `;
 
-// === URL-Parameter lesen ===
 const params  = new URLSearchParams(window.location.search);
 const bereich = params.get('bereich') || '';
 const id      = params.get('id')      || '';
@@ -26,8 +24,7 @@ window.toggleAllCheckboxes = function () {
     if (boxes.length === 0) return;
     const allChecked = Array.from(boxes).every(cb => cb.checked);
     boxes.forEach(cb => cb.checked = !allChecked);
-    const btn = document.getElementById('toggleAllBtn');
-    if (btn) btn.textContent = allChecked ? "Alle auswählen" : "Alle abwählen";
+    document.getElementById('toggleAllBtn').textContent = allChecked ? "Alle auswählen" : "Alle abwählen";
 };
 
 window.downloadSelected = function () {
@@ -42,9 +39,7 @@ window.downloadSelected = function () {
 window.closeDownloadModal = function () {
     if (modalOverlay) {
         modalOverlay.classList.add('hidden');
-        if (window.history.state && window.history.state.popup) {
-            window.history.back();
-        }
+        if (window.history.state?.popup) window.history.back();
     }
 };
 
@@ -67,10 +62,8 @@ async function loadGallery() {
         return;
     }
 
-    // Seitentitel setzen
     document.title = `R-Rangers – ${titel}`;
-    const h1 = document.getElementById("galerie-titel");
-    if (h1) h1.textContent = titel;
+    document.getElementById("galerie-titel").textContent = titel;
 
     try {
         const response = await fetch(`/api/bilder.php?bereich=${encodeURIComponent(bereich)}&id=${encodeURIComponent(id)}`);
@@ -85,20 +78,19 @@ async function loadGallery() {
         galleryImages  = [];
         originalImages = [];
 
-        data.images.forEach((url, idx) => {
-            galleryImages.push(url);
-            originalImages.push(url);
+        data.images.forEach((entry, idx) => {
+            galleryImages.push(entry.lightbox);
+            originalImages.push(entry.original);
 
-            const cleanName = url.split('/').pop();
-
+            const cleanName = entry.original.split('/').pop();
             const card = document.createElement("div");
             card.className = "gallery-item";
             card.onclick = () => openLightbox(idx);
 
             card.innerHTML = `
-                <img src="${url}" alt="${cleanName}" loading="lazy">
+                <img src="${entry.thumb}" alt="${cleanName}" loading="lazy">
                 <div class="checkbox-container">
-                    <label><input type="checkbox" class="img-checkbox" value="${url}"> Auswählen</label>
+                    <label><input type="checkbox" class="img-checkbox" value="${entry.original}"> Auswählen</label>
                 </div>
                 <a href="#" class="download-btn">Download</a>
             `;
@@ -108,7 +100,7 @@ async function loadGallery() {
                 e.preventDefault();
                 e.stopPropagation();
                 showModalContent("Wichtiger Download-Hinweis!", downloadHinweisHTML, true,
-                    () => triggerSingleDownload(url, cleanName));
+                    () => triggerSingleDownload(entry.original, cleanName));
             };
 
             gallery.appendChild(card);
@@ -123,14 +115,13 @@ async function loadGallery() {
 // === LIGHTBOX ===
 
 function updateLightboxImage() {
-    const lbImg = document.getElementById("lightbox-img");
+    const lbImg      = document.getElementById("lightbox-img");
     const lbContainer = document.getElementById("lightbox");
     if (!lbImg || !lbContainer) return;
 
     lbImg.src = "";
     lbImg.style.opacity = "0";
     lbContainer.classList.add("loading");
-
     lbImg.src = galleryImages[currentIndex];
     lbImg.onload = () => {
         lbContainer.classList.remove("loading");
@@ -145,22 +136,20 @@ async function triggerSingleDownload(url, filename) {
     const startBtn = document.getElementById("startDownloadBtn");
     startBtn.style.display = "none";
     bodyElem.innerHTML = `<p>Bild wird vorbereitet...</p><span id="statusText">Lade Daten...</span>`;
-
     try {
-        const resp = await fetch(url);
-        const blob = await resp.blob();
+        const blob = await fetch(url).then(r => r.blob());
         saveAs(blob, filename);
         document.getElementById("statusText").innerText = "Fertig!";
         setTimeout(() => closeDownloadModal(), 800);
-    } catch (err) {
+    } catch {
         bodyElem.innerHTML = "<p>Fehler beim Download.</p>";
     }
 }
 
 async function triggerZipDownload() {
     const checked = document.querySelectorAll(".img-checkbox:checked");
-    const zip   = new JSZip();
-    const total = checked.length;
+    const zip     = new JSZip();
+    const total   = checked.length;
 
     const bodyElem = document.getElementById("modalBody");
     const startBtn = document.getElementById("startDownloadBtn");
@@ -179,34 +168,25 @@ async function triggerZipDownload() {
 
     for (const box of checked) {
         try {
-            const resp = await fetch(box.value);
-            const blob = await resp.blob();
+            const blob = await fetch(box.value).then(r => r.blob());
             zip.file(box.value.split('/').pop(), blob);
             count++;
             pBar.style.width = (count / total * 100) + "%";
             sText.innerText = `${count} von ${total} Bildern geladen`;
-        } catch (err) { console.error("Fehler bei Bild:", box.value); }
+        } catch { console.error("Fehler bei Bild:", box.value); }
     }
 
     sText.innerText = "ZIP-Archiv wird erstellt...";
-    const content = await zip.generateAsync({ type: "blob" });
-    saveAs(content, titel.replace(/\s+/g, '_') + ".zip");
+    saveAs(await zip.generateAsync({ type: "blob" }), titel.replace(/\s+/g, '_') + ".zip");
     setTimeout(() => closeDownloadModal(), 1000);
 }
 
 function showModalContent(title, html, showButton, action = null) {
     if (!modalOverlay) return;
-    const titleElem = document.getElementById("modalTitle");
-    const bodyElem  = document.getElementById("modalBody");
-    if (titleElem) titleElem.textContent = title;
-    if (bodyElem)  bodyElem.innerHTML = html;
-
-    if (showButton) {
-        startDownloadBtn.style.display = "inline-block";
-        startDownloadBtn.onclick = () => action();
-    } else {
-        startDownloadBtn.style.display = "none";
-    }
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalBody").innerHTML    = html;
+    startDownloadBtn.style.display = showButton ? "inline-block" : "none";
+    if (showButton) startDownloadBtn.onclick = action;
     modalOverlay.classList.remove('hidden');
     window.history.pushState({ popup: "modal" }, "");
 }
@@ -215,14 +195,14 @@ function showModalContent(title, html, showButton, action = null) {
 window.addEventListener("popstate", (event) => {
     const lb    = document.getElementById("lightbox");
     const modal = document.getElementById('downloadModal');
-    if (!event.state || !event.state.popup) {
-        if (lb)    lb.classList.add("hidden");
-        if (modal) modal.classList.add('hidden');
+    if (!event.state?.popup) {
+        lb?.classList.add("hidden");
+        modal?.classList.add('hidden');
         return;
     }
     if (event.state.popup === "lightbox") {
-        if (modal) modal.classList.add('hidden');
-        if (lb)    lb.classList.remove("hidden");
+        modal?.classList.add('hidden');
+        lb?.classList.remove("hidden");
     }
 });
 
@@ -230,7 +210,13 @@ window.addEventListener("popstate", (event) => {
 document.addEventListener("DOMContentLoaded", () => {
     modalOverlay     = document.getElementById('downloadModal');
     startDownloadBtn = document.getElementById('startDownloadBtn');
-    loadGallery();
+
+    // Auth-Check mit schönem Popup (nav.js ist jetzt geladen)
+    if (checkAccess(bereich)) {
+        loadGallery();
+    } else {
+        askPassword(bereich, loadGallery);
+    }
 
     // Lightbox-Navigation
     document.querySelector(".lightbox-next")?.addEventListener("click", e => {
@@ -244,22 +230,18 @@ document.addEventListener("DOMContentLoaded", () => {
         updateLightboxImage();
     });
 
-    // Lightbox-Download
     document.getElementById("lightbox-download-btn")?.addEventListener("click", e => {
         e.preventDefault();
-        const url       = originalImages[currentIndex];
-        const cleanName = url.split('/').pop();
+        const url = originalImages[currentIndex];
         showModalContent("Wichtiger Download-Hinweis!", downloadHinweisHTML, true,
-            () => triggerSingleDownload(url, cleanName));
+            () => triggerSingleDownload(url, url.split('/').pop()));
     });
 
-    // Lightbox schließen
     document.querySelector(".lightbox-close")?.addEventListener("click", () => {
         document.getElementById("lightbox").classList.add("hidden");
         if (window.history.state?.popup) window.history.back();
     });
 
-    // Tastatur
     document.addEventListener("keydown", e => {
         const modal = document.getElementById('downloadModal');
         const lb    = document.getElementById("lightbox");
@@ -277,12 +259,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Scroll-to-Top
     const scrollTopBtn = document.getElementById("scrollTopBtn");
     window.onscroll = () => {
         scrollTopBtn.style.display =
-            (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300)
-            ? "block" : "none";
+            (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
     };
     scrollTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 });
