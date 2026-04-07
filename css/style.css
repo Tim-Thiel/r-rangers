@@ -289,18 +289,21 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
 /* --------------------------------------------
    LIGHTBOX & MODAL
 --------------------------------------------- */
-.lightbox { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.95); display: flex; justify-content: center; 
-    align-items: center; z-index: 9999; 
+.lightbox {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); display: flex; justify-content: center;
+    align-items: center; z-index: 9999;
+    /* Padding reserviert Platz für X (oben), Pfeile (links/rechts), Download-Button (unten) */
+    padding: 65px 100px 85px 100px;
+    box-sizing: border-box;
 }
 
 .lightbox.hidden { opacity: 0; pointer-events: none; }
 
 /* Bild mit Übergang für das Einblenden aus der JS */
 .lightbox img {
-    max-width: calc(100vw - 180px);  /* Platz für Pfeile links/rechts */
-    max-height: calc(100vh - 130px); /* Platz für X oben und Download-Button unten */
+    max-width: 100%;
+    max-height: 100%;
     border-radius: 12px;
     transition: opacity 0.28s ease, transform 0.28s ease;
 }

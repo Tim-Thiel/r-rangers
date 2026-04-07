@@ -37,7 +37,7 @@ foreach (glob($dir . "*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", GLOB_BRACE) as $
     $name = basename($file);
     $images[] = [
         'original' => "/bilder/$bereich/$id/$name",
-        'lightbox' => "/api/thumb.php?bereich=$bereich&id=$id&datei=$name&w=800",
+        'lightbox' => "/api/thumb.php?bereich=$bereich&id=$id&datei=$name&w=1200",
         'thumb'    => "/api/thumb.php?bereich=$bereich&id=$id&datei=$name&w=400",
     ];
 }
