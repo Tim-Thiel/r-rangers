@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <input id="pw-popup-input" type="password" placeholder="Passwort"
                     style="width:90%; padding:10px; border-radius:8px; margin: 15px 0;">
                 <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-                    <button id="pw-popup-cancel"  class="download-btn" style="background: #666;">Abbrechen</button>
+                    <button id="pw-popup-cancel"  class="download-btn btn-gray">Abbrechen</button>
                     <button id="pw-popup-confirm" class="download-btn">Öffnen</button>
                 </div>
             </div>
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="modal-content" style="max-width: 300px; padding: 20px;">
                 <h3 style="color: red;">Fehler</h3>
                 <p id="error-message" style="margin: 15px 0;">Falsches Passwort!</p>
-                <button id="error-popup-close" class="download-btn" style="background: #666;">Schließen</button>
+                <button id="error-popup-close" class="download-btn btn-gray">Schließen</button>
             </div>
         </div>
     `);

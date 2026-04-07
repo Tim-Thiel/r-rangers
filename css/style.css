@@ -281,6 +281,8 @@ button, .download-btn, #download-selected {
 }
 
 button:hover, .download-btn:hover, #download-selected:hover { background: var(--ranger-blue-dark); }
+.btn-gray { background: #666; }
+.btn-gray:hover { background: #444; }
 .lightbox-nav span:hover, .lightbox-close:hover { color: var(--ranger-blue) !important; }
 .checkbox-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; font-size: 0.9em; }
 
@@ -297,8 +299,8 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
 
 /* Bild mit Übergang für das Einblenden aus der JS */
 .lightbox img {
-    max-width: 95%;
-    max-height: 92%;
+    max-width: calc(100vw - 180px);  /* Platz für Pfeile links/rechts */
+    max-height: calc(100vh - 130px); /* Platz für X oben und Download-Button unten */
     border-radius: 12px;
     transition: opacity 0.28s ease, transform 0.28s ease;
 }

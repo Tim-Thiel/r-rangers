@@ -198,17 +198,20 @@ function updateLightboxImage() {
     // Raus-Zoomen
     lbImg.style.opacity   = "0";
     lbImg.style.transform = "scale(0.93)";
-    lbContainer.classList.add("loading");
 
     // Nach der Zoom-out-Animation das neue Bild laden
     setTimeout(() => {
-        lbImg.src = target;
         lbImg.onload = () => {
             if (galleryImages[currentIndex] !== target) return;
             lbContainer.classList.remove("loading");
             lbImg.style.opacity   = "1";
             lbImg.style.transform = "scale(1)";
         };
+        // Ladekreis nur zeigen wenn Bild noch nicht im Cache
+        if (!lbImg.complete || lbImg.naturalWidth === 0) {
+            lbContainer.classList.add("loading");
+        }
+        lbImg.src = target;
     }, 220);
 }
 
