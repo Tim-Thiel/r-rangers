@@ -179,8 +179,8 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     transition: filter 0.25s ease;
 }
 
-.gallery-item:hover img {
-    filter: brightness(0.65);
+.gallery-item:hover {
+    box-shadow: 0 0 0 3px var(--ranger-blue), var(--shadow-hover);
 }
 
 /* Overlay mit Controls – nur bei Hover oder wenn ausgewählt sichtbar */
@@ -197,8 +197,7 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     border-radius: 0 0 var(--radius) var(--radius);
 }
 
-.gallery-item:hover .gallery-overlay,
-.gallery-item.selected .gallery-overlay {
+.gallery-item:hover .gallery-overlay {
     opacity: 1;
 }
 
