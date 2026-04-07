@@ -1,7 +1,10 @@
 RewriteEngine On
 
-# Extensionless URLs: /bereiche/aktionen -> bereiche/aktionen.html
-# Kein !-d Check, da Ordner und Dateien gleichen Namens existieren (z.B. bereiche/aktionen/ und bereiche/aktionen.html)
+# Trailing Slash: /bereiche/aktionen/ -> /bereiche/aktionen.html (wenn gleichnamige .html existiert)
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+)/$ /$1.html [R=301,L]
+
+# Kein Extension: /bereiche/aktionen -> bereiche/aktionen.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.+)$ $1.html [L,QSA]
