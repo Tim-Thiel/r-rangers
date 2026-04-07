@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /bereiche/
+Disallow: /api/
+Disallow: /bilder/
+Disallow: /bilder_cache/
+
+Allow: /

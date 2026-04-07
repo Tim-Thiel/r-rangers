@@ -265,9 +265,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const scrollTopBtn = document.getElementById("scrollTopBtn");
-    window.onscroll = () => {
+    window.addEventListener('scroll', () => {
         scrollTopBtn.style.display =
             (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
-    };
+    });
     scrollTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 });
