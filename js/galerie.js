@@ -17,6 +17,11 @@ const bereich = params.get('bereich') || '';
 const id      = params.get('id')      || '';
 const titel   = params.get('titel')   || 'Galerie';
 
+// Saubere URL anzeigen (statt ?bereich=...&id=...&titel=...)
+if (bereich && id) {
+    history.replaceState(null, '', `/bereiche/${bereich}/${id}`);
+}
+
 // === GLOBALE FUNKTIONEN ===
 
 window.toggleAllCheckboxes = function () {

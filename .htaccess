@@ -3,6 +3,11 @@ RewriteEngine On
 # Verhindert Apaches automatischen Redirect von /bereiche/aktionen -> /bereiche/aktionen/
 DirectorySlash Off
 
+# Saubere Galerie-URLs: /bereiche/aktionen/slk_tag2026 -> galerie
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^bereiche/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_.()-]+)$ /bereiche/galerie?bereich=$1&id=$2 [L,QSA]
+
 # Interner Rewrite (ohne Redirect): /bereiche/aktionen -> bereiche/aktionen.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
