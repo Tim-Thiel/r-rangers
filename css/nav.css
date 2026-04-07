@@ -105,24 +105,14 @@ nav.site-navigation a.active {
     }
     
     .nav-logo {
-            order: 1; /* Logo bleibt auf Platz 1 (links) */
-        }
-/* 1. Navigationsleiste fixieren */
-    nav.site-navigation {
-        display: flex;
-        justify-content: space-between; /* Drückt Logo/Text nach links, Toggle nach rechts */
-        align-items: center;
-        position: sticky; /* Sorgt dafür, dass sie beim Scrollen oben bleibt */
-        top: 0;
-        z-index: 1000; /* Ganz nach oben, damit nichts drüber liegt */
-        width: 100%;
-        box-sizing: border-box;
+        order: 1;
+        justify-content: space-between;
     }
 
-    /* 2. Drei Striche nach RECHTS */
+    /* 2. Hamburger-Menü nach RECHTS */
     .menu-toggle {
         display: block;
-        order: 2; /* Schiebt das Icon im Flex-Layout nach rechts */
+        order: 2;
         font-size: 24px;
         color: white;
         cursor: pointer;
