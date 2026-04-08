@@ -140,7 +140,8 @@ async function loadGallery() {
 
             const cleanName = entry.original.split('/').pop();
             const card = document.createElement("div");
-            card.className = "gallery-item";
+            card.className = "gallery-item gallery-item--entering";
+            card.style.animationDelay = `${Math.min(idx * 40, 600)}ms`;
             card.onclick = () => openLightbox(idx);
 
             card.innerHTML = `
@@ -208,31 +209,65 @@ async function loadGallery() {
 
 // === LIGHTBOX ===
 
-function updateLightboxImage() {
+function updateLightboxImage(direction) {
     const lbImg       = document.getElementById("lightbox-img");
     const lbContainer = document.getElementById("lightbox");
     if (!lbImg || !lbContainer) return;
 
-    const target = galleryImages[currentIndex];
+    const target  = galleryImages[currentIndex];
+    const isSwipe = direction === 'left' || direction === 'right';
 
-    // Raus-Zoomen
-    lbImg.style.opacity   = "0";
-    lbImg.style.transform = "scale(0.985)";
+    if (isSwipe) {
+        // Wisch-Animation: aktuelles Bild rausschieben
+        const exitX  = direction === 'left' ? '-60%' : '60%';
+        const enterX = direction === 'left' ?  '60%' : '-60%';
+        lbImg.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+        lbImg.style.opacity    = '0';
+        lbImg.style.transform  = `translateX(${exitX})`;
 
-    // Nach der Zoom-out-Animation das neue Bild laden
-    setTimeout(() => {
-        lbImg.onload = () => {
-            if (galleryImages[currentIndex] !== target) return;
-            lbContainer.classList.remove("loading");
-            lbImg.style.opacity   = "1";
-            lbImg.style.transform = "scale(1)";
-        };
-        // Ladekreis nur zeigen wenn Bild noch nicht im Cache
-        if (!lbImg.complete || lbImg.naturalWidth === 0) {
-            lbContainer.classList.add("loading");
-        }
-        lbImg.src = target;
-    }, 80);
+        setTimeout(() => {
+            // Neues Bild unsichtbar auf der Gegenseite positionieren
+            lbImg.style.transition = 'none';
+            lbImg.style.transform  = `translateX(${enterX})`;
+            lbImg.style.opacity    = '0';
+
+            const doEnter = () => {
+                requestAnimationFrame(() => {
+                    lbImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                    lbImg.style.opacity    = '1';
+                    lbImg.style.transform  = 'translateX(0)';
+                    lbContainer.classList.remove('loading');
+                });
+            };
+
+            lbImg.onload = () => {
+                if (galleryImages[currentIndex] !== target) return;
+                doEnter();
+            };
+            if (!lbImg.complete || lbImg.naturalWidth === 0) {
+                lbContainer.classList.add('loading');
+            }
+            lbImg.src = target;
+        }, 150);
+    } else {
+        // Zoom-Animation (Desktop / Tastatur / Pfeile)
+        lbImg.style.transition = 'opacity 0.1s ease, transform 0.1s ease';
+        lbImg.style.opacity    = "0";
+        lbImg.style.transform  = "scale(0.985)";
+
+        setTimeout(() => {
+            lbImg.onload = () => {
+                if (galleryImages[currentIndex] !== target) return;
+                lbContainer.classList.remove("loading");
+                lbImg.style.opacity   = "1";
+                lbImg.style.transform = "scale(1)";
+            };
+            if (!lbImg.complete || lbImg.naturalWidth === 0) {
+                lbContainer.classList.add("loading");
+            }
+            lbImg.src = target;
+        }, 80);
+    }
 }
 
 // === DOWNLOAD ===
@@ -354,10 +389,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (Math.abs(dx) < 40) return;
         if (dx < 0) {
             currentIndex = (currentIndex + 1) % galleryImages.length;
+            updateLightboxImage('left');
         } else {
             currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage('right');
         }
-        updateLightboxImage();
     }, { passive: true });
 
     document.getElementById("lightbox-download-btn")?.addEventListener("click", e => {
