@@ -67,7 +67,11 @@ nav.site-navigation a:hover {
 nav.site-navigation a.active {
     background: transparent;
     color: white;
-    border-bottom: 2px solid #f1c40f;
+    border-bottom: 2px solid #7ec8ff;
+}
+
+nav.site-navigation a.active:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 /* Styling für das Nav-Logo */

@@ -380,21 +380,93 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Touch-Swipe für mobile Navigation
-    let touchStartX = 0;
-    document.getElementById("lightbox")?.addEventListener("touchstart", e => {
+    // Echtzeit-Drag für mobile Lightbox-Navigation
+    const lb = document.getElementById("lightbox");
+    const lbImgEl = document.getElementById("lightbox-img");
+    let touchStartX = 0, touchStartY = 0, isDragging = false;
+
+    lb?.addEventListener("touchstart", e => {
         touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+        isDragging  = true;
+        if (lbImgEl) lbImgEl.style.transition = 'none';
     }, { passive: true });
-    document.getElementById("lightbox")?.addEventListener("touchend", e => {
+
+    lb?.addEventListener("touchmove", e => {
+        if (!isDragging || !lbImgEl) return;
         const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) < 40) return;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        // Vertikale Geste → abbrechen
+        if (Math.abs(dy) > Math.abs(dx) * 1.5 && Math.abs(dy) > 15) {
+            isDragging = false;
+            lbImgEl.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+            lbImgEl.style.transform  = 'translateX(0)';
+            lbImgEl.style.opacity    = '1';
+            return;
+        }
+        lbImgEl.style.transform = `translateX(${dx}px)`;
+        lbImgEl.style.opacity   = String(Math.max(0.6, 1 - Math.abs(dx) / window.innerWidth));
+    }, { passive: true });
+
+    const cancelDrag = () => {
+        if (!isDragging || !lbImgEl) return;
+        isDragging = false;
+        lbImgEl.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+        lbImgEl.style.transform  = 'translateX(0)';
+        lbImgEl.style.opacity    = '1';
+    };
+    lb?.addEventListener("touchcancel", cancelDrag, { passive: true });
+
+    lb?.addEventListener("touchend", e => {
+        if (!isDragging || !lbImgEl) return;
+        isDragging = false;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+
+        if (Math.abs(dx) < 60) {
+            // Zu wenig gewischt → zurückschnappen
+            lbImgEl.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+            lbImgEl.style.transform  = 'translateX(0)';
+            lbImgEl.style.opacity    = '1';
+            return;
+        }
+
+        // Index aktualisieren
         if (dx < 0) {
             currentIndex = (currentIndex + 1) % galleryImages.length;
-            updateLightboxImage('left');
         } else {
             currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-            updateLightboxImage('right');
         }
+        const newTarget = galleryImages[currentIndex];
+        const exitX  = dx < 0 ? '-110%' : '110%';
+        const enterX = dx < 0 ?  '110%' : '-110%';
+
+        // Aktuelles Bild zügig rausschieben (von der aktuellen Position aus)
+        lbImgEl.style.transition = 'opacity 0.12s ease, transform 0.12s ease';
+        lbImgEl.style.transform  = `translateX(${exitX})`;
+        lbImgEl.style.opacity    = '0';
+
+        setTimeout(() => {
+            lbImgEl.style.transition = 'none';
+            lbImgEl.style.transform  = `translateX(${enterX})`;
+            lbImgEl.style.opacity    = '0';
+
+            const doEnter = () => {
+                void lbImgEl.getBoundingClientRect();
+                lbImgEl.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+                lbImgEl.style.opacity    = '1';
+                lbImgEl.style.transform  = 'translateX(0)';
+                document.getElementById("lightbox")?.classList.remove('loading');
+            };
+
+            lbImgEl.onload = () => {
+                if (galleryImages[currentIndex] !== newTarget) return;
+                doEnter();
+            };
+            if (!lbImgEl.complete || lbImgEl.naturalWidth === 0) {
+                document.getElementById("lightbox")?.classList.add('loading');
+            }
+            lbImgEl.src = newTarget;
+        }, 110);
     }, { passive: true });
 
     document.getElementById("lightbox-download-btn")?.addEventListener("click", e => {
