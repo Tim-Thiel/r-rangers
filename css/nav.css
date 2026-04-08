@@ -63,9 +63,9 @@ nav.site-navigation a:hover {
     transition: 0.2s;
 }
 
-/* Aktiver Link */
+/* Aktiver Link – nur Unterstrich, kein Hover-Hintergrund */
 nav.site-navigation a.active {
-    background: rgba(255, 255, 255, 0.2);
+    background: transparent;
     color: white;
     border-bottom: 2px solid #f1c40f;
 }
@@ -145,31 +145,16 @@ nav.site-navigation a.active {
     }
 
     .nav-links a {
-        width: 100%;
+        width: fit-content;
+        min-width: 180px;
         text-align: center;
-        padding: 15px 0;
+        padding: 10px 25px;
         color: white;
         text-decoration: none;
         font-size: 1.1rem;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        border-radius: 0;
+        border-radius: 8px;
         display: block;
-    }
-
-    .nav-links a:last-child {
-        border-bottom: none;
-    }
-
-    /* Hover/Tap auf mobilen Links: volle Breite, kein abgerundetes Kästchen */
-    .nav-links a:hover,
-    .nav-links a.active {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 0;
-        border-bottom-color: transparent;
-    }
-
-    .nav-links a.active {
-        border-bottom: 2px solid #f1c40f;
+        margin: 2px auto;
     }
 
     .footer-wrapper {

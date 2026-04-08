@@ -100,9 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
     css.href = "/css/nav.css";
     document.head.appendChild(css);
 
-    // Aktiven Navigationspunkt markieren
+    // Aktiven Navigationspunkt markieren (Logo ausschließen)
     const path = window.location.pathname;
-    document.querySelectorAll("nav.site-navigation a").forEach(link => {
+    document.querySelectorAll("nav.site-navigation a:not(.nav-logo)").forEach(link => {
         const target = link.dataset.url || link.getAttribute("href");
         if (target && target !== "#" && path.startsWith(target)) {
             link.classList.add("active");

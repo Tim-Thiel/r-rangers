@@ -221,7 +221,7 @@ function updateLightboxImage(direction) {
         // Wisch-Animation: aktuelles Bild rausschieben
         const exitX  = direction === 'left' ? '-60%' : '60%';
         const enterX = direction === 'left' ?  '60%' : '-60%';
-        lbImg.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+        lbImg.style.transition = 'opacity 0.12s ease, transform 0.12s ease';
         lbImg.style.opacity    = '0';
         lbImg.style.transform  = `translateX(${exitX})`;
 
@@ -235,7 +235,7 @@ function updateLightboxImage(direction) {
                 // Reflow erzwingen, damit transition:none + enterX-Position committed sind
                 // bevor wir die Animation starten (verhindert falsches Einwischen)
                 void lbImg.getBoundingClientRect();
-                lbImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                lbImg.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
                 lbImg.style.opacity    = '1';
                 lbImg.style.transform  = 'translateX(0)';
                 lbContainer.classList.remove('loading');
@@ -249,7 +249,7 @@ function updateLightboxImage(direction) {
                 lbContainer.classList.add('loading');
             }
             lbImg.src = target;
-        }, 150);
+        }, 110);
     } else {
         // Zoom-Animation (Desktop / Tastatur / Pfeile)
         lbImg.style.transition = 'opacity 0.1s ease, transform 0.1s ease';
