@@ -89,8 +89,8 @@ function closeLightbox() {
     const lbImg = document.getElementById("lightbox-img");
     if (!lb || lb.classList.contains("hidden")) return;
     lbImg.style.opacity   = "0";
-    lbImg.style.transform = "scale(0.93)";
-    setTimeout(() => lb.classList.add("hidden"), 280);
+    lbImg.style.transform = "scale(0.97)";
+    setTimeout(() => lb.classList.add("hidden"), 160);
 }
 
 // === GALERIE LADEN ===
@@ -209,7 +209,7 @@ function updateLightboxImage() {
 
     // Raus-Zoomen
     lbImg.style.opacity   = "0";
-    lbImg.style.transform = "scale(0.93)";
+    lbImg.style.transform = "scale(0.97)";
 
     // Nach der Zoom-out-Animation das neue Bild laden
     setTimeout(() => {
@@ -224,7 +224,7 @@ function updateLightboxImage() {
             lbContainer.classList.add("loading");
         }
         lbImg.src = target;
-    }, 220);
+    }, 130);
 }
 
 // === DOWNLOAD ===
