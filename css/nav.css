@@ -87,6 +87,24 @@ nav.site-navigation a.active:hover {
     transition: transform 0.3s ease;
 }
 
+/* Dark Mode Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    margin-left: auto;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 /* Hamburger Button standardmäßig verstecken */
 .menu-toggle {
     display: none;
@@ -113,11 +131,18 @@ nav.site-navigation a.active:hover {
         justify-content: space-between;
     }
 
-    /* 2. Hamburger-Menü ganz rechts */
-    .menu-toggle {
-        display: block;
+    /* Dark Mode Toggle: rechts neben Logo, vor Hamburger */
+    .theme-toggle {
         order: 2;
         margin-left: auto;
+        padding: 5px 10px;
+    }
+
+    /* Hamburger-Menü ganz rechts */
+    .menu-toggle {
+        display: block;
+        order: 3;
+        margin-left: 0;
         font-size: 24px;
         color: white;
         cursor: pointer;

@@ -15,6 +15,57 @@
 }
 
 /* --------------------------------------------
+   Dark Mode
+--------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+    html:not([class*="dark-mode"]):not(.light-mode) {
+        --light-bg: #0f172a;
+        --card-bg: #1e2d3d;
+        --text-dark: #e2e8f0;
+        --shadow: 0 2px 8px rgba(0,0,0,0.5);
+        --shadow-hover: 0 10px 25px rgba(0,85,170,0.5);
+    }
+}
+
+html.dark-mode {
+    --light-bg: #0f172a;
+    --card-bg: #1e2d3d;
+    --text-dark: #e2e8f0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.5);
+    --shadow-hover: 0 10px 25px rgba(0,85,170,0.5);
+}
+
+/* Hardcoded-Farben im Dark Mode überschreiben */
+html.dark-mode .modal-content,
+@media (prefers-color-scheme: dark) { html:not(.dark-mode):not(.light-mode) .modal-content { } }
+html.dark-mode .modal-content {
+    background: #1e2d3d;
+    color: var(--text-dark);
+}
+html.dark-mode .modal-close             { color: #94a3b8; }
+html.dark-mode .progress-container     { background: #2d3f52; }
+html.dark-mode input[type="password"]  { background: #2d3f52; color: var(--text-dark); border: 1px solid #4b6280; border-radius: 8px; outline: none; }
+html.dark-mode .info-box               { background: rgba(241,196,15,0.08); }
+html.dark-mode .signature              { color: #94a3b8; }
+html.dark-mode h1, html.dark-mode h2   { color: #7ec8ff; }
+html.dark-mode .legal-page            { color: var(--text-dark); }
+html.dark-mode .legal-page h1         { color: var(--text-dark); border-color: #4b6280; }
+html.dark-mode .legal-page h2         { color: #7ec8ff; }
+html.dark-mode .legal-page .back-link { color: #7ec8ff; }
+html.dark-mode .legal-page a          { color: #e2e8f0; }
+
+@media (prefers-color-scheme: dark) {
+    html:not(.dark-mode):not(.light-mode) .modal-content     { background: #1e2d3d; color: #e2e8f0; }
+    html:not(.dark-mode):not(.light-mode) .modal-close       { color: #94a3b8; }
+    html:not(.dark-mode):not(.light-mode) .progress-container { background: #2d3f52; }
+    html:not(.dark-mode):not(.light-mode) input[type="password"] { background: #2d3f52; color: #e2e8f0; border: 1px solid #4b6280; border-radius: 8px; }
+    html:not(.dark-mode):not(.light-mode) .info-box          { background: rgba(241,196,15,0.08); }
+    html:not(.dark-mode):not(.light-mode) .signature         { color: #94a3b8; }
+    html:not(.dark-mode):not(.light-mode) h1,
+    html:not(.dark-mode):not(.light-mode) h2                 { color: #7ec8ff; }
+}
+
+/* --------------------------------------------
    Globales Layout
 --------------------------------------------- */
 * {
@@ -23,7 +74,7 @@
 
 body {
     margin: 0; padding: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--light-bg);
     color: var(--text-dark);
 }

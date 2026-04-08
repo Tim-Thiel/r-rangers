@@ -1,5 +1,16 @@
 /* auth.js – Passwortlogik mit serverseitigem Login */
 
+// Dark Mode sofort anwenden (vor DOM-Rendering, verhindert weißen Blitz)
+// Priorität: manuelle Auswahl > System-Einstellung
+(function () {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark-mode');
+    } else if (saved === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+}());
+
 // ================= GLOBALE SCHLIESS-FUNKTIONEN =================
 
 function closeErrorPopup() {

@@ -21,14 +21,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <a href="/index" class="nav-logo">
                 <img src="/bilder/thumbs/emblemwhite.png" alt="Royal Rangers Emblem">
             </a>
-            <div class="menu-toggle" id="mobile-menu">
-                <i class="fas fa-bars"></i>
-            </div>
             <div class="nav-links" id="nav-links">
                 <a href="/index"><i class="fas fa-home"></i> Startseite</a>
                 <a href="#" data-area="aktionen" data-url="/bereiche/aktionen"><i class="fas fa-campground"></i> Aktionen & Camps</a>
                 <a href="#" data-area="team"     data-url="/bereiche/team"><i class="fas fa-paw"></i> Rennmäuse</a>
                 <a href="#" data-area="privat"   data-url="/bereiche/privat"><i class="fas fa-lock"></i> Private Bilder</a>
+            </div>
+            <button class="theme-toggle" id="theme-toggle" title="Dark Mode umschalten">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
             </div>
         </nav>
     `);
@@ -123,5 +126,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mobile Menü
     document.getElementById("mobile-menu").addEventListener('click', () => {
         document.getElementById("nav-links").classList.toggle('active');
+    });
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById("theme-toggle");
+    const updateThemeIcon = () => {
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        const icon = themeToggle?.querySelector('i');
+        if (icon) icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    };
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark-mode');
+        document.documentElement.classList.toggle('light-mode', !isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcon();
     });
 });
