@@ -171,11 +171,12 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
 /* Masonry-Galerie (Zeilen-Reihenfolge via JS-Spans) */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, 280px);
     grid-auto-rows: 10px;
     gap: 10px;
     padding: 0 20px;
     align-items: start;
+    justify-content: center;
 }
 
 /* --------------------------------------------
