@@ -408,9 +408,16 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
 }
 
 @media (max-width: 768px) {
-    /* Lightbox auf Handy: Pfeile verstecken, Wischen via Touch */
+    /* Lightbox auf Handy: Pfeile verstecken, Wischen via Touch, vertikales Scrollen */
     .lightbox {
-        padding: 50px 15px 65px 15px;
+        padding: 50px 15px 75px 15px;
+        overflow-y: auto;
+        align-items: flex-start;
+    }
+
+    .lightbox img {
+        max-height: none;
+        margin: auto;
     }
     .lightbox-nav span { display: none; }
     .lightbox-close { top: 12px; right: 15px; font-size: 34px; }
