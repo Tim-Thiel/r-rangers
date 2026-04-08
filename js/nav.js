@@ -15,15 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fa.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css";
     document.head.appendChild(fa);
 
-    // Google Fonts: Inter (gleiche Schrift auf allen Geräten)
-    const gfPre = document.createElement("link");
-    gfPre.rel  = "preconnect";
-    gfPre.href = "https://fonts.googleapis.com";
-    document.head.appendChild(gfPre);
-    const gf = document.createElement("link");
-    gf.rel  = "stylesheet";
-    gf.href = "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap";
-    document.head.appendChild(gf);
 
     // Navigation
     document.body.insertAdjacentHTML("afterbegin", `

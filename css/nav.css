@@ -97,6 +97,7 @@ nav.site-navigation a.active:hover {
     padding: 8px 12px;
     border-radius: 8px;
     transition: background 0.2s;
+    margin: 0;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 }
