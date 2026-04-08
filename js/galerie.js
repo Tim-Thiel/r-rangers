@@ -16,7 +16,7 @@ const downloadHinweisHTML = `
 const params = new URLSearchParams(window.location.search);
 let bereich  = params.get('bereich') || '';
 let id       = params.get('id')      || '';
-const titel  = params.get('titel')   || 'Galerie';
+let titel    = params.get('titel')   || '';
 
 // Fallback: bereich/id aus sauberer URL lesen (z.B. nach Seiten-Reload)
 if (!bereich || !id) {
@@ -26,6 +26,14 @@ if (!bereich || !id) {
         bereich = bereich || parts[1];
         id      = id      || parts[2];
     }
+}
+
+// Titel: aus URL-Param speichern, oder aus localStorage wiederherstellen
+const titleKey = `gallery_title_${bereich}_${id}`;
+if (titel) {
+    localStorage.setItem(titleKey, titel);
+} else {
+    titel = localStorage.getItem(titleKey) || 'Galerie';
 }
 
 // Saubere URL anzeigen (statt ?bereich=...&id=...&titel=...)
