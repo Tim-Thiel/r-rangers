@@ -373,6 +373,18 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
 /* --------------------------------------------
    MOBILE OPTIMIERUNG
 --------------------------------------------- */
+/* Mobiler Controls-Toggle: nur auf Touch-Geräten sichtbar */
+#toggleControlsBtn { display: none; }
+@media (hover: none) {
+    #toggleControlsBtn { display: inline-block; }
+}
+
+/* Wenn Controls eingeblendet: Buttons immer sichtbar */
+.gallery--controls-visible .gallery-select-btn,
+.gallery--controls-visible .gallery-dl-btn {
+    opacity: 1;
+}
+
 @media (max-width: 600px) {
     .landing-grid, .grid { padding: 0 15px !important; }
     .gallery { grid-template-columns: repeat(2, 1fr); padding: 0 10px; }

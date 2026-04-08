@@ -35,6 +35,13 @@ if (bereich && id) {
 
 // === GLOBALE FUNKTIONEN ===
 
+window.toggleMobileControls = function () {
+    const gallery = document.getElementById("gallery");
+    const btn     = document.getElementById("toggleControlsBtn");
+    const visible = gallery.classList.toggle("gallery--controls-visible");
+    btn.textContent = visible ? "☑ Auswählen ausblenden" : "☑ Auswählen einblenden";
+};
+
 window.toggleAllCheckboxes = function () {
     const boxes = document.querySelectorAll(".img-checkbox");
     if (boxes.length === 0) return;
@@ -161,8 +168,13 @@ async function loadGallery() {
             else img.addEventListener('load', setSpan);
         });
 
-        // Lightbox-Bilder im Hintergrund vorladen
-        galleryImages.forEach(src => { new Image().src = src; });
+        // Lightbox erst vorladen wenn Browser idle (Galerie hat Vorrang)
+        const preloadLightbox = () => galleryImages.forEach(src => { new Image().src = src; });
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(preloadLightbox);
+        } else {
+            setTimeout(preloadLightbox, 1500);
+        }
 
         // Spans bei Fenstergröße-Änderung neu berechnen
         let resizeTimer;
