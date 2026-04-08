@@ -100,6 +100,15 @@ document.addEventListener("DOMContentLoaded", () => {
     css.href = "/css/nav.css";
     document.head.appendChild(css);
 
+    // Aktiven Navigationspunkt markieren
+    const path = window.location.pathname;
+    document.querySelectorAll("nav.site-navigation a").forEach(link => {
+        const target = link.dataset.url || link.getAttribute("href");
+        if (target && target !== "#" && path.startsWith(target)) {
+            link.classList.add("active");
+        }
+    });
+
     // Navigationslinks mit Auth
     document.querySelectorAll("nav.site-navigation a[data-area]").forEach(link => {
         link.addEventListener("click", e => {

@@ -232,12 +232,13 @@ function updateLightboxImage(direction) {
             lbImg.style.opacity    = '0';
 
             const doEnter = () => {
-                requestAnimationFrame(() => {
-                    lbImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-                    lbImg.style.opacity    = '1';
-                    lbImg.style.transform  = 'translateX(0)';
-                    lbContainer.classList.remove('loading');
-                });
+                // Reflow erzwingen, damit transition:none + enterX-Position committed sind
+                // bevor wir die Animation starten (verhindert falsches Einwischen)
+                void lbImg.getBoundingClientRect();
+                lbImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                lbImg.style.opacity    = '1';
+                lbImg.style.transform  = 'translateX(0)';
+                lbContainer.classList.remove('loading');
             };
 
             lbImg.onload = () => {

@@ -65,9 +65,9 @@ nav.site-navigation a:hover {
 
 /* Aktiver Link */
 nav.site-navigation a.active {
-    /* Hellerer, transparenter Hintergrund für den aktiven Link */
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
     color: white;
+    border-bottom: 2px solid #f1c40f;
 }
 
 /* Styling für das Nav-Logo */
@@ -109,14 +109,16 @@ nav.site-navigation a.active {
         justify-content: space-between;
     }
 
-    /* 2. Hamburger-Menü nach RECHTS */
+    /* 2. Hamburger-Menü ganz rechts */
     .menu-toggle {
         display: block;
         order: 2;
+        margin-left: auto;
         font-size: 24px;
         color: white;
         cursor: pointer;
         padding: 5px;
+        -webkit-tap-highlight-color: transparent;
     }
 
     /* 3. Ausgeklapptes Feld & Mittiger Text */
@@ -129,37 +131,45 @@ nav.site-navigation a.active {
         position: absolute;
         top: 100%;
         left: 0;
-        
+
         overflow: hidden;
         max-height: 0;
-        /* WICHTIG: Padding muss hier auf 0 stehen */
-        padding: 0; 
-        
-        /* Wir animieren max-height UND padding gleichzeitig */
+        padding: 0;
         transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
     }
 
     .nav-links.active {
         max-height: 350px;
-        /* Das Padding wird erst hier aktiv und mit-animiert */
-        padding: 10px 0; 
+        padding: 10px 0;
         border-bottom: 2px solid rgba(255,255,255,0.1);
     }
 
     .nav-links a {
         width: 100%;
-        text-align: center; /* Text innerhalb des Links zentrieren */
+        text-align: center;
         padding: 15px 0;
         color: white;
         text-decoration: none;
         font-size: 1.1rem;
         border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-radius: 0;
         display: block;
     }
 
-    /* Damit das erste Element keinen unnötigen Rand oben hat */
     .nav-links a:last-child {
         border-bottom: none;
+    }
+
+    /* Hover/Tap auf mobilen Links: volle Breite, kein abgerundetes Kästchen */
+    .nav-links a:hover,
+    .nav-links a.active {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 0;
+        border-bottom-color: transparent;
+    }
+
+    .nav-links a.active {
+        border-bottom: 2px solid #f1c40f;
     }
 
     .footer-wrapper {
