@@ -83,6 +83,7 @@ window.openLightbox = function (idx) {
     const lbImg = document.getElementById("lightbox-img");
     if (lb) {
         lb.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
         window.history.pushState({ popup: "lightbox" }, "");
     }
     if (lbImg) {
@@ -98,7 +99,10 @@ function closeLightbox() {
     if (!lb || lb.classList.contains("hidden")) return;
     lbImg.style.opacity   = "0";
     lbImg.style.transform = "scale(0.985)";
-    setTimeout(() => lb.classList.add("hidden"), 100);
+    setTimeout(() => {
+        lb.classList.add("hidden");
+        document.body.style.overflow = "";
+    }, 100);
 }
 
 // === GALERIE LADEN ===
