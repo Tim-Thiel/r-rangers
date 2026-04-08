@@ -199,6 +199,8 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     opacity: 0;
     transition: opacity 0.2s, background 0.2s, border-color 0.2s;
     z-index: 5;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 .gallery-item:hover .gallery-dl-btn {
@@ -277,7 +279,11 @@ button, .download-btn, #download-selected {
     background: var(--ranger-blue); color: white; border: none; padding: 10px 20px;
     font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.25s;
     display: inline-block; text-decoration: none; width: fit-content;
-    margin: 5px auto 0 auto; 
+    margin: 5px auto 0 auto;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button:hover, .download-btn:hover, #download-selected:hover { background: var(--ranger-blue-dark); }
@@ -305,7 +311,7 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
     max-width: 100%;
     max-height: 100%;
     border-radius: 12px;
-    transition: opacity 0.15s ease, transform 0.15s ease;
+    transition: opacity 0.1s ease, transform 0.1s ease;
 }
 
 /* DER LADEPINNER (wird aktiv, wenn JS .loading hinzufügt) */
@@ -326,19 +332,20 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
     100% { transform: rotate(360deg); }
 }
 
-.lightbox-close { position: absolute; top: 25px; right: 40px; font-size: 45px; color: #fff; cursor: pointer; transition: color 0.2s; }
+.lightbox-close { position: absolute; top: 25px; right: 40px; font-size: 45px; color: #fff; cursor: pointer; transition: color 0.2s; user-select: none; -webkit-tap-highlight-color: transparent; }
 .lightbox-close:hover { color: var(--ranger-blue); }
 
 /* Pfeile mit blauem Hover-Effekt */
-.lightbox-nav span { 
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    font-size: 60px; 
-    color: #fff; 
-    cursor: pointer; 
+.lightbox-nav span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 60px;
+    color: #fff;
+    cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
     z-index: 10002;
 }
 
@@ -386,15 +393,25 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
 }
 
 @media (max-width: 768px) {
-    /* Lightbox auf Handy: minimales Padding, Bild nutzt fast den ganzen Screen */
+    /* Lightbox auf Handy: Pfeile verstecken, Wischen via Touch */
     .lightbox {
-        padding: 50px 45px 65px 45px;
+        padding: 50px 15px 65px 15px;
     }
-    .lightbox-prev { left: 8px; }
-    .lightbox-next { right: 8px; }
-    .lightbox-nav span { font-size: 36px; }
+    .lightbox-nav span { display: none; }
     .lightbox-close { top: 12px; right: 15px; font-size: 34px; }
     #lightbox-download-btn { padding: 8px 18px; font-size: 13px; bottom: 15px; }
+
+    /* Kein Hover-Effekt auf Touch-Geräten */
+    .gallery-item:hover {
+        box-shadow: var(--shadow);
+    }
+    .gallery-item:hover .gallery-select-btn,
+    .gallery-item:hover .gallery-dl-btn {
+        opacity: 0;
+    }
+    .gallery-item:hover img {
+        filter: none;
+    }
 }
 
 @media (max-width: 600px) {

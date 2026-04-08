@@ -89,8 +89,8 @@ function closeLightbox() {
     const lbImg = document.getElementById("lightbox-img");
     if (!lb || lb.classList.contains("hidden")) return;
     lbImg.style.opacity   = "0";
-    lbImg.style.transform = "scale(0.97)";
-    setTimeout(() => lb.classList.add("hidden"), 160);
+    lbImg.style.transform = "scale(0.985)";
+    setTimeout(() => lb.classList.add("hidden"), 100);
 }
 
 // === GALERIE LADEN ===
@@ -209,7 +209,7 @@ function updateLightboxImage() {
 
     // Raus-Zoomen
     lbImg.style.opacity   = "0";
-    lbImg.style.transform = "scale(0.97)";
+    lbImg.style.transform = "scale(0.985)";
 
     // Nach der Zoom-out-Animation das neue Bild laden
     setTimeout(() => {
@@ -224,7 +224,7 @@ function updateLightboxImage() {
             lbContainer.classList.add("loading");
         }
         lbImg.src = target;
-    }, 130);
+    }, 80);
 }
 
 // === DOWNLOAD ===
@@ -327,6 +327,30 @@ document.addEventListener("DOMContentLoaded", () => {
         currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
         updateLightboxImage();
     });
+
+    // Klick neben das Bild schließt Lightbox
+    document.getElementById("lightbox")?.addEventListener("click", e => {
+        if (e.target === document.getElementById("lightbox")) {
+            closeLightbox();
+            if (window.history.state?.popup) window.history.back();
+        }
+    });
+
+    // Touch-Swipe für mobile Navigation
+    let touchStartX = 0;
+    document.getElementById("lightbox")?.addEventListener("touchstart", e => {
+        touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    document.getElementById("lightbox")?.addEventListener("touchend", e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) < 40) return;
+        if (dx < 0) {
+            currentIndex = (currentIndex + 1) % galleryImages.length;
+        } else {
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        }
+        updateLightboxImage();
+    }, { passive: true });
 
     document.getElementById("lightbox-download-btn")?.addEventListener("click", e => {
         e.preventDefault();
