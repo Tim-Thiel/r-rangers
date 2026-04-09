@@ -46,7 +46,7 @@ function showError(message) {
         return;
     }
 
-    errorMessage.textContent = message;
+    errorMessage.innerHTML = message;
     errorPopup.classList.remove('hidden');
 
     closeBtn.onclick = closeErrorPopup;
@@ -90,11 +90,11 @@ function askPassword(area, onSuccess) {
                 closePopupClean();
                 onSuccess();
             } else {
-                showError("❌ Falsches Passwort!");
+                showError('<i class="fas fa-times-circle"></i> Falsches Passwort!');
                 input.value = "";
             }
         } catch {
-            showError("❌ Verbindungsfehler. Bitte erneut versuchen.");
+            showError('<i class="fas fa-times-circle"></i> Verbindungsfehler. Bitte erneut versuchen.');
             input.value = "";
         }
     };

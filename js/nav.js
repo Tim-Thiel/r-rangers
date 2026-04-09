@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML("beforeend", `
         <div id="pw-popup" class="modal-overlay hidden">
             <div class="modal-content">
-                <span id="pw-popup-close" class="modal-close">&times;</span>
-                <h3>🔐 Passwort erforderlich</h3>
+                <span id="pw-popup-close" class="modal-close"><i class="fas fa-times"></i></span>
+                <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
                 <input id="pw-popup-input" type="password" placeholder="Passwort"
                     style="width:90%; padding:10px; border-radius:8px; margin: 15px 0;">
                 <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">

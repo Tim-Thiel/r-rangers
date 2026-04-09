@@ -47,7 +47,9 @@ window.toggleMobileControls = function () {
     const gallery = document.getElementById("gallery");
     const btn     = document.getElementById("toggleControlsBtn");
     const visible = gallery.classList.toggle("gallery--controls-visible");
-    btn.textContent = visible ? "☑ Auswählen ausblenden" : "☑ Auswählen einblenden";
+    btn.innerHTML = visible
+        ? '<i class="fas fa-check-square"></i> Auswählen ausblenden'
+        : '<i class="fas fa-check-square"></i> Auswählen einblenden';
 };
 
 window.toggleAllCheckboxes = function () {
@@ -153,7 +155,7 @@ async function loadGallery() {
                 <label class="gallery-select-btn" title="Auswählen" onclick="event.stopPropagation()">
                     <input type="checkbox" class="img-checkbox" value="${entry.original}">
                 </label>
-                <a href="#" class="gallery-dl-btn" title="Herunterladen">⬇</a>
+                <a href="#" class="gallery-dl-btn" title="Herunterladen"><i class="fas fa-download"></i></a>
             `;
 
             card.querySelector(".img-checkbox").addEventListener("change", e => {
