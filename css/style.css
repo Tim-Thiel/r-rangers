@@ -319,15 +319,12 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
 /* Checkbox-Input verstecken – visuelle Anzeige übernimmt .gallery-select-icon */
 .img-checkbox { display: none; }
 
-/* Häkchen-Icon: hover = dezent sichtbar, selected = voll sichtbar */
+/* Häkchen-Icon: immer sichtbar, bei Auswahl voll weiß */
 .gallery-select-icon {
-    color: transparent;
+    color: rgba(255,255,255,0.65);
     font-size: 14px;
     pointer-events: none;
     transition: color 0.15s;
-}
-.gallery-item:hover .gallery-select-icon {
-    color: rgba(255,255,255,0.6);
 }
 .gallery-item.selected .gallery-select-icon {
     color: white;
