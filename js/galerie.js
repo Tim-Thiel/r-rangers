@@ -154,6 +154,7 @@ async function loadGallery() {
                 <img src="${entry.thumb}" alt="${cleanName}" loading="lazy">
                 <label class="gallery-select-btn" title="Auswählen" onclick="event.stopPropagation()">
                     <input type="checkbox" class="img-checkbox" value="${entry.original}">
+                    <i class="fas fa-check gallery-select-icon"></i>
                 </label>
                 <a href="#" class="gallery-dl-btn" title="Herunterladen"><i class="fas fa-download"></i></a>
             `;

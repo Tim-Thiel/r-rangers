@@ -310,34 +310,27 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     border-color: white;
 }
 
-.gallery-select-btn:hover::after {
-    content: "✓";
-    color: rgba(255,255,255,0.9) !important;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1;
-}
-
 .gallery-item.selected .gallery-select-btn {
     opacity: 1;
     background: var(--ranger-blue);
     border-color: var(--ranger-blue);
 }
 
-.gallery-item:hover .gallery-select-btn::after {
-    content: "✓";
-    color: rgba(255,255,255,0.5);
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1;
-}
+/* Checkbox-Input verstecken – visuelle Anzeige übernimmt .gallery-select-icon */
+.img-checkbox { display: none; }
 
-.gallery-item.selected .gallery-select-btn::after {
-    content: "✓";
+/* Häkchen-Icon: hover = dezent sichtbar, selected = voll sichtbar */
+.gallery-select-icon {
+    color: transparent;
+    font-size: 14px;
+    pointer-events: none;
+    transition: color 0.15s;
+}
+.gallery-item:hover .gallery-select-icon {
+    color: rgba(255,255,255,0.6);
+}
+.gallery-item.selected .gallery-select-icon {
     color: white;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1;
 }
 
 /* --------------------------------------------
