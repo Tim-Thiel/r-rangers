@@ -51,6 +51,8 @@ html.dark-mode .legal-page h1         { color: var(--text-dark); border-color: #
 html.dark-mode .legal-page h2         { color: #7ec8ff; }
 html.dark-mode .legal-page .back-link { color: #7ec8ff; }
 html.dark-mode .legal-page a          { color: #e2e8f0; }
+html.dark-mode .info-box strong,
+html.dark-mode #modalBody strong      { color: #7ec8ff; }
 
 @media (prefers-color-scheme: dark) {
     html:not(.dark-mode):not(.light-mode) .modal-content     { background: #1e2d3d; color: #e2e8f0; }
@@ -58,9 +60,15 @@ html.dark-mode .legal-page a          { color: #e2e8f0; }
     html:not(.dark-mode):not(.light-mode) .progress-container { background: #2d3f52; }
     html:not(.dark-mode):not(.light-mode) input[type="password"] { background: #2d3f52; color: #e2e8f0; border: 1px solid #4b6280; border-radius: 8px; }
     html:not(.dark-mode):not(.light-mode) .info-box          { background: rgba(241,196,15,0.08); }
+    html:not(.dark-mode):not(.light-mode) .info-box strong,
+    html:not(.dark-mode):not(.light-mode) #modalBody strong  { color: #7ec8ff; }
     html:not(.dark-mode):not(.light-mode) .signature         { color: #94a3b8; }
     html:not(.dark-mode):not(.light-mode) h1,
     html:not(.dark-mode):not(.light-mode) h2                 { color: #7ec8ff; }
+    html:not(.dark-mode):not(.light-mode) .legal-page        { color: #e2e8f0; }
+    html:not(.dark-mode):not(.light-mode) .legal-page h1     { color: #e2e8f0; border-color: #4b6280; }
+    html:not(.dark-mode):not(.light-mode) .legal-page .back-link { color: #7ec8ff; }
+    html:not(.dark-mode):not(.light-mode) .legal-page a      { color: #e2e8f0; }
 }
 
 /* --------------------------------------------
@@ -331,7 +339,7 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
 /* --------------------------------------------
    Buttons & Checkboxen
 --------------------------------------------- */
-button, .download-btn, #download-selected {
+button, .download-btn {
     background: var(--ranger-blue); color: white; border: none; padding: 10px 20px;
     font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.25s;
     display: inline-block; text-decoration: none; width: fit-content;
@@ -342,11 +350,10 @@ button, .download-btn, #download-selected {
     -webkit-tap-highlight-color: transparent;
 }
 
-button:hover, .download-btn:hover, #download-selected:hover { background: var(--ranger-blue-dark); }
+button:hover, .download-btn:hover { background: var(--ranger-blue-dark); }
 .btn-gray { background: #666; }
 .btn-gray:hover { background: #444; }
 .lightbox-nav span:hover, .lightbox-close:hover { color: var(--ranger-blue) !important; }
-.checkbox-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; font-size: 0.9em; }
 
 /* --------------------------------------------
    LIGHTBOX & MODAL

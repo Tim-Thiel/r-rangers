@@ -89,8 +89,7 @@ window.openLightbox = function (idx) {
         window.history.pushState({ popup: "lightbox" }, "");
     }
     if (lbImg) {
-        lbImg.style.opacity   = "0";
-        lbImg.style.transform = "scale(0.93)";
+        lbImg.style.opacity = "0";
     }
     updateLightboxImage();
 };
@@ -192,22 +191,6 @@ async function loadGallery() {
         } else {
             setTimeout(preloadLightbox, 1500);
         }
-
-        // Spans bei Fenstergröße-Änderung neu berechnen
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                document.querySelectorAll('.gallery-item').forEach(item => {
-                    const img = item.querySelector('img');
-                    if (img.complete && img.naturalWidth) {
-                        const ratio = img.naturalHeight / img.naturalWidth;
-                        const spans = Math.ceil((item.offsetWidth * ratio + 10) / 20);
-                        item.style.gridRowEnd = `span ${spans}`;
-                    }
-                });
-            }, 100);
-        });
 
     } catch (err) {
         console.error("Fehler beim Laden der Bilder:", err);
@@ -513,4 +496,20 @@ document.addEventListener("DOMContentLoaded", () => {
             (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
     });
     scrollTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // Masonry-Spans bei Fenstergröße-Änderung neu berechnen (einmalig registrieren, nicht pro loadGallery-Aufruf)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                const img = item.querySelector('img');
+                if (img && img.complete && img.naturalWidth) {
+                    const ratio = img.naturalHeight / img.naturalWidth;
+                    const spans = Math.ceil((item.offsetWidth * ratio + 10) / 20);
+                    item.style.gridRowEnd = `span ${spans}`;
+                }
+            });
+        }, 100);
+    });
 });
