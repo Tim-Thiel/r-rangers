@@ -2,6 +2,7 @@
 session_set_cookie_params([
     'lifetime' => 86400,   // 24 Stunden
     'httponly' => true,    // Kein JS-Zugriff auf das Cookie
+    'secure'   => true,    // Nur über HTTPS senden
     'samesite' => 'Lax',
 ]);
 session_start();

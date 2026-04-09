@@ -253,10 +253,10 @@ function updateLightboxImage(direction) {
                 if (galleryImages[currentIndex] !== target) return;
                 doEnter();
             };
+            lbImg.src = target;
             if (!lbImg.complete || lbImg.naturalWidth === 0) {
                 lbContainer.classList.add('loading');
             }
-            lbImg.src = target;
         }, 110);
     } else {
         // Zoom-Animation (Desktop / Tastatur / Pfeile)
@@ -271,10 +271,10 @@ function updateLightboxImage(direction) {
                 lbImg.style.opacity   = "1";
                 lbImg.style.transform = "scale(1)";
             };
+            lbImg.src = target;
             if (!lbImg.complete || lbImg.naturalWidth === 0) {
                 lbContainer.classList.add("loading");
             }
-            lbImg.src = target;
         }, 80);
     }
 }
@@ -471,10 +471,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (galleryImages[currentIndex] !== newTarget) return;
                 doEnter();
             };
+            lbImgEl.src = newTarget;
             if (!lbImgEl.complete || lbImgEl.naturalWidth === 0) {
                 document.getElementById("lightbox")?.classList.add('loading');
             }
-            lbImgEl.src = newTarget;
         }, 110);
     }, { passive: true });
 

@@ -467,13 +467,6 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
     }
 }
 
-@media (max-width: 600px) {
-    .landing-grid, .grid { padding: 0 15px !important; }
-    .grid .card { flex: 0 0 100%; }
-    .gallery { grid-template-columns: repeat(2, 1fr); padding: 0 10px; }
-    #scrollTopBtn { bottom: 20px; right: 20px; width: 42px; height: 42px; font-size: 18px; }
-}
-
 /* Sanftes Scrollen für die ganze Seite aktivieren */
 html {
     scroll-behavior: smooth;
@@ -507,13 +500,11 @@ html {
     transform: scale(1.1);
 }
 
-/* Falls der Button auf dem Handy zu groß ist */
 @media (max-width: 600px) {
-    #scrollTopBtn {
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 15px;
-    }
+    .landing-grid, .grid { padding: 0 15px !important; }
+    .grid .card { flex: 0 0 100%; }
+    .gallery { grid-template-columns: repeat(2, 1fr); padding: 0 10px; }
+    #scrollTopBtn { bottom: 20px; right: 20px; width: 42px; height: 42px; font-size: 18px; }
 }
 
 /* Design für die rechtlichen Seiten */
