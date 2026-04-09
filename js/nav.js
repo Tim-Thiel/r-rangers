@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML("beforeend", `
         <div id="error-popup" class="modal-overlay hidden" style="z-index: 20000;">
             <div class="modal-content" style="max-width: 300px; padding: 20px;">
-                <h3 style="color: red;">Fehler</h3>
+                <h3 class="error-title">Fehler</h3>
                 <p id="error-message" style="margin: 15px 0;">Falsches Passwort!</p>
                 <button id="error-popup-close" class="download-btn btn-gray">Schließen</button>
             </div>
@@ -93,11 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </footer>
     `);
 
-    // nav.css laden
-    const css  = document.createElement("link");
-    css.rel  = "stylesheet";
-    css.href = "/css/nav.css";
-    document.head.appendChild(css);
 
     // Aktiven Navigationspunkt markieren (Logo ausschließen)
     const path = window.location.pathname;

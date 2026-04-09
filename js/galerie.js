@@ -8,7 +8,7 @@ let modalOverlay;
 let startDownloadBtn;
 
 const downloadHinweisHTML = `
-    <p>⚠️ <strong>Nur für private Nutzung!</strong></p>
+    <p><i class="fas fa-exclamation-triangle" style="color:#f1c40f;"></i> <strong>Nur für private Nutzung!</strong></p>
     <p>Die Bilder dürfen <strong>nicht veröffentlicht</strong> oder <strong>an Dritte weitergegeben</strong> werden.</p>
     <p>Bestätige die Einhaltung dieser Regelung mit<br>'Download starten'.</p>
 `;
@@ -137,6 +137,7 @@ async function loadGallery() {
 
         gallery.innerHTML = "";
         galleryImages  = [];
+        thumbImages    = [];
         originalImages = [];
 
         data.images.forEach((entry, idx) => {
@@ -347,6 +348,7 @@ window.addEventListener("popstate", (event) => {
     if (!event.state?.popup) {
         lb?.classList.add("hidden");
         modal?.classList.add('hidden');
+        document.body.style.overflow = "";
         return;
     }
     if (event.state.popup === "lightbox") {
