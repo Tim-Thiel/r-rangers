@@ -1,7 +1,6 @@
 /* galerie.js – Galerie mit lokalen Bildern von Netcup */
 
 let galleryImages  = [];
-let thumbImages    = [];
 let originalImages = [];
 let currentIndex   = 0;
 let modalOverlay;
@@ -136,12 +135,10 @@ async function loadGallery() {
 
         gallery.innerHTML = "";
         galleryImages  = [];
-        thumbImages    = [];
         originalImages = [];
 
         data.images.forEach((entry, idx) => {
             galleryImages.push(entry.lightbox);
-            thumbImages.push(entry.thumb);
             originalImages.push(entry.original);
 
             const cleanName = entry.original.split('/').pop();

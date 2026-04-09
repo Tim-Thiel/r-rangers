@@ -303,10 +303,6 @@ h1, h2 { text-align: center; color: var(--ranger-blue); margin-top: 20px; font-w
     justify-content: center;
 }
 
-.gallery-select-btn input {
-    display: none;
-}
-
 .gallery-item:hover .gallery-select-btn {
     opacity: 1;
 }
