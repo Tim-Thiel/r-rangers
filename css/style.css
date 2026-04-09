@@ -468,16 +468,13 @@ button:hover, .download-btn:hover, #download-selected:hover { background: var(--
     .lightbox-close { top: 12px; right: 15px; font-size: 34px; }
     #lightbox-download-btn { padding: 8px 18px; font-size: 13px; bottom: 15px; }
 
-    /* Kein Hover-Effekt auf Touch-Geräten */
-    .gallery-item:hover {
+    /* Hover nur unterdrücken wenn Controls nicht aktiv und Item nicht ausgewählt */
+    .gallery:not(.gallery--controls-visible) .gallery-item:not(.selected):hover {
         box-shadow: var(--shadow);
     }
-    .gallery-item:hover .gallery-select-btn,
-    .gallery-item:hover .gallery-dl-btn {
+    .gallery:not(.gallery--controls-visible) .gallery-item:not(.selected):hover .gallery-select-btn,
+    .gallery:not(.gallery--controls-visible) .gallery-item:not(.selected):hover .gallery-dl-btn {
         opacity: 0;
-    }
-    .gallery-item:hover img {
-        filter: none;
     }
 }
 
