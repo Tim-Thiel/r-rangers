@@ -13,13 +13,6 @@
 
 // ================= GLOBALE SCHLIESS-FUNKTIONEN =================
 
-function closeErrorPopup() {
-    const errorPopup = document.getElementById('error-popup');
-    if (errorPopup) errorPopup.classList.add('hidden');
-
-    const pwInput = document.getElementById("pw-popup-input");
-    if (pwInput) pwInput.focus();
-}
 
 function closePopupClean() {
     const popup    = document.getElementById("pw-popup");
@@ -38,23 +31,6 @@ function closePopupClean() {
     if (btnCancel) btnCancel.onclick = null;
 }
 
-// ================= FEHLER ANZEIGE =================
-function showError(message) {
-    const errorPopup   = document.getElementById('error-popup');
-    const errorMessage = document.getElementById('error-message');
-    const closeBtn     = document.getElementById('error-popup-close');
-
-    if (!errorPopup) {
-        alert(message);
-        return;
-    }
-
-    errorMessage.innerHTML = message;
-    errorPopup.classList.remove('hidden');
-
-    closeBtn.onclick = closeErrorPopup;
-    closeBtn.focus();
-}
 
 // ================= HAUPTLOGIK =================
 function checkAccess(area) {
@@ -132,11 +108,6 @@ function openArea(area, url) {
 // ================= ESC-HANDLER =================
 document.addEventListener("keydown", (e) => {
     if (e.key === 'Escape') {
-        const errorPopup = document.getElementById('error-popup');
-        if (errorPopup && !errorPopup.classList.contains('hidden')) {
-            closeErrorPopup();
-            return;
-        }
         const pwPopup = document.getElementById("pw-popup");
         if (pwPopup && !pwPopup.classList.contains('hidden')) {
             closePopupClean();
