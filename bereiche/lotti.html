@@ -9,23 +9,103 @@
 <link rel="stylesheet" href="../css/style.css">
 <script src="/js/auth.js"></script>
 <script src="/js/nav.js" defer></script>
-<script defer>
-document.addEventListener("DOMContentLoaded", () => {
-    if (!checkAccess("lotti")) {
-        askPassword("lotti", () => window.location.reload());
-    }
-});
-</script>
-
+<style>
+#lotti-gate {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+#lotti-gate.hidden { display: none; }
+#lotti-gate-box {
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+#lotti-gate-box h3 { margin-bottom: 1rem; }
+#lotti-gate-input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+#lotti-gate-error {
+    color: #e74c3c;
+    margin-bottom: 0.5rem;
+    display: none;
+}
+</style>
 </head>
 
 <body>
-    <div class="page-wrapper">
-    <h1>Lotti</h1>
 
+<div id="lotti-gate">
+    <div id="lotti-gate-box">
+        <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
+        <input id="lotti-gate-input" type="password" placeholder="Passwort" autofocus>
+        <div id="lotti-gate-error"><i class="fas fa-times-circle"></i> Falsches Passwort</div>
+        <button class="download-btn" id="lotti-gate-btn">Öffnen</button>
+    </div>
+</div>
+
+<div class="page-wrapper">
+    <h1>Lotti</h1>
     <div class="grid">
 
     </div>
-    </div>
+</div>
+
+<script>
+(function () {
+    const gate  = document.getElementById('lotti-gate');
+    const input = document.getElementById('lotti-gate-input');
+    const btn   = document.getElementById('lotti-gate-btn');
+    const err   = document.getElementById('lotti-gate-error');
+
+    function checkToday() {
+        const saved = localStorage.getItem('auth_date_lotti');
+        const today = new Date().toISOString().split('T')[0];
+        return saved === today;
+    }
+
+    if (checkToday()) {
+        gate.classList.add('hidden');
+    } else {
+        const submit = async () => {
+            const formData = new FormData();
+            formData.append('area', 'lotti');
+            formData.append('password', input.value);
+            try {
+                const res  = await fetch('/api/login.php', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.ok) {
+                    const today = new Date().toISOString().split('T')[0];
+                    localStorage.setItem('auth_date_lotti', today);
+                    gate.classList.add('hidden');
+                } else {
+                    err.style.display = 'block';
+                    input.value = '';
+                    input.focus();
+                }
+            } catch {
+                err.textContent = 'Verbindungsfehler.';
+                err.style.display = 'block';
+            }
+        };
+        btn.addEventListener('click', submit);
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    }
+}());
+</script>
+
 </body>
 </html>
