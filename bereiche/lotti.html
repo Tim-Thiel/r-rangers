@@ -8,15 +8,14 @@
 <link rel="stylesheet" href="/css/nav.css">
 <link rel="stylesheet" href="../css/style.css">
 <script src="/js/auth.js"></script>
-<script>
+<script src="/js/nav.js" defer></script>
+<script defer>
 document.addEventListener("DOMContentLoaded", () => {
     if (!checkAccess("lotti")) {
         askPassword("lotti", () => window.location.reload());
     }
 });
 </script>
-
-<script src="/js/nav.js" defer></script>
 
 </head>
 
