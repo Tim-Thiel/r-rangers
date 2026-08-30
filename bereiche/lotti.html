@@ -9,62 +9,20 @@
 <link rel="stylesheet" href="../css/style.css">
 <script src="/js/auth.js"></script>
 <script src="/js/nav.js" defer></script>
-<style>
-#lotti-gate {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-}
-#lotti-gate.hidden { display: none; }
-#lotti-gate-box {
-    background: var(--card-bg, #fff);
-    border-radius: 12px;
-    padding: 2rem;
-    max-width: 320px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    position: relative;
-}
-#lotti-gate-close {
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-    cursor: pointer;
-    font-size: 1.2rem;
-    opacity: 0.6;
-}
-#lotti-gate-close:hover { opacity: 1; }
-#lotti-gate-box h3 { margin-bottom: 1rem; }
-#lotti-gate-input {
-    width: 90%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-}
-#lotti-gate-error {
-    color: #e74c3c;
-    margin-bottom: 0.5rem;
-    display: none;
-}
-</style>
 </head>
 
 <body>
 
-<div id="lotti-gate">
-    <div id="lotti-gate-box">
-        <span id="lotti-gate-close"><i class="fas fa-times"></i></span>
+<div id="lotti-gate" class="modal-overlay">
+    <div class="modal-content">
+        <span id="lotti-gate-close" class="modal-close"><i class="fas fa-times"></i></span>
         <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
-        <input id="lotti-gate-input" type="password" placeholder="Passwort" autofocus>
-        <div id="lotti-gate-error"><i class="fas fa-times-circle"></i> Falsches Passwort</div>
-        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
+        <input id="lotti-gate-input" type="password" placeholder="Passwort"
+            style="width:90%; padding:10px; border-radius:8px; margin: 15px 0;">
+        <div id="lotti-gate-error" style="color:#e74c3c; display:none; margin-bottom:8px;">
+            <i class="fas fa-times-circle"></i> <span id="lotti-gate-error-msg">Falsches Passwort!</span>
+        </div>
+        <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
             <button class="download-btn btn-gray" id="lotti-gate-cancel">Abbrechen</button>
             <button class="download-btn" id="lotti-gate-btn">Öffnen</button>
         </div>
@@ -86,6 +44,7 @@
     const cancel = document.getElementById('lotti-gate-cancel');
     const close  = document.getElementById('lotti-gate-close');
     const err    = document.getElementById('lotti-gate-error');
+    const errMsg = document.getElementById('lotti-gate-error-msg');
 
     const goHome = () => { window.location.href = '/index'; };
 
@@ -98,6 +57,7 @@
     if (checkToday()) {
         gate.classList.add('hidden');
     } else {
+        input.focus();
         const submit = async () => {
             const formData = new FormData();
             formData.append('area', 'lotti');
@@ -110,12 +70,13 @@
                     localStorage.setItem('auth_date_lotti', today);
                     gate.classList.add('hidden');
                 } else {
+                    errMsg.textContent = 'Falsches Passwort!';
                     err.style.display = 'block';
                     input.value = '';
                     input.focus();
                 }
             } catch {
-                err.textContent = 'Verbindungsfehler.';
+                errMsg.textContent = 'Verbindungsfehler.';
                 err.style.display = 'block';
             }
         };
