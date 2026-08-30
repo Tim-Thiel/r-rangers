@@ -30,6 +30,9 @@ function closePopupClean() {
     if (popup)  popup.classList.add("hidden");
     if (input)  input.value = "";
 
+    const errDiv = document.getElementById('pw-popup-error');
+    if (errDiv) errDiv.style.display = 'none';
+
     if (btnOpen)   btnOpen.onclick   = null;
     if (input)     input.onkeydown   = null;
     if (btnCancel) btnCancel.onclick = null;
@@ -73,6 +76,17 @@ function askPassword(area, onSuccess) {
     input.value = "";
     input.focus();
 
+    const errDiv = document.getElementById('pw-popup-error');
+    const errMsg = document.getElementById('pw-popup-error-msg');
+    if (errDiv) errDiv.style.display = 'none';
+
+    const showInlineError = (msg) => {
+        if (errDiv && errMsg) {
+            errMsg.textContent = msg;
+            errDiv.style.display = 'block';
+        }
+    };
+
     const submit = async () => {
         const password = input.value;
 
@@ -90,11 +104,12 @@ function askPassword(area, onSuccess) {
                 closePopupClean();
                 onSuccess();
             } else {
-                showError('<i class="fas fa-times-circle"></i> Falsches Passwort!');
+                showInlineError('Falsches Passwort!');
                 input.value = "";
+                input.focus();
             }
         } catch {
-            showError('<i class="fas fa-times-circle"></i> Verbindungsfehler. Bitte erneut versuchen.');
+            showInlineError('Verbindungsfehler. Bitte erneut versuchen.');
             input.value = "";
         }
     };

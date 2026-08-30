@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
                 <input id="pw-popup-input" type="password" placeholder="Passwort"
                     style="width:90%; padding:10px; border-radius:8px; margin: 15px 0;">
+                <div id="pw-popup-error" style="color:#e74c3c; display:none; margin-bottom:8px;">
+                    <i class="fas fa-times-circle"></i> <span id="pw-popup-error-msg">Falsches Passwort!</span>
+                </div>
                 <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
                     <button id="pw-popup-cancel"  class="download-btn btn-gray">Abbrechen</button>
                     <button id="pw-popup-confirm" class="download-btn">Öffnen</button>

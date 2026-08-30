@@ -28,7 +28,17 @@
     width: 90%;
     text-align: center;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    position: relative;
 }
+#lotti-gate-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0.6;
+}
+#lotti-gate-close:hover { opacity: 1; }
 #lotti-gate-box h3 { margin-bottom: 1rem; }
 #lotti-gate-input {
     width: 90%;
@@ -50,10 +60,14 @@
 
 <div id="lotti-gate">
     <div id="lotti-gate-box">
+        <span id="lotti-gate-close"><i class="fas fa-times"></i></span>
         <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
         <input id="lotti-gate-input" type="password" placeholder="Passwort" autofocus>
         <div id="lotti-gate-error"><i class="fas fa-times-circle"></i> Falsches Passwort</div>
-        <button class="download-btn" id="lotti-gate-btn">Öffnen</button>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
+            <button class="download-btn btn-gray" id="lotti-gate-cancel">Abbrechen</button>
+            <button class="download-btn" id="lotti-gate-btn">Öffnen</button>
+        </div>
     </div>
 </div>
 
@@ -66,10 +80,14 @@
 
 <script>
 (function () {
-    const gate  = document.getElementById('lotti-gate');
-    const input = document.getElementById('lotti-gate-input');
-    const btn   = document.getElementById('lotti-gate-btn');
-    const err   = document.getElementById('lotti-gate-error');
+    const gate   = document.getElementById('lotti-gate');
+    const input  = document.getElementById('lotti-gate-input');
+    const btn    = document.getElementById('lotti-gate-btn');
+    const cancel = document.getElementById('lotti-gate-cancel');
+    const close  = document.getElementById('lotti-gate-close');
+    const err    = document.getElementById('lotti-gate-error');
+
+    const goHome = () => { window.location.href = '/index'; };
 
     function checkToday() {
         const saved = localStorage.getItem('auth_date_lotti');
@@ -103,6 +121,8 @@
         };
         btn.addEventListener('click', submit);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+        cancel.addEventListener('click', goHome);
+        close.addEventListener('click', goHome);
     }
 }());
 </script>
